@@ -14,11 +14,11 @@
 #import "DYDanmuProvider.h"
 
 #define RGB(r,g,b,a)    [NSColor colorWithRed:r/255.0 green:g/255.0 blue:b/255.0 alpha:a]
-#define ColorFromRGBHex(rgbValue)                                                                                                \
+#define ColorFromRGBHex(rgbValue,alphaValue)                                                                                                \
 [NSColor colorWithRed:((float) ((rgbValue & 0xFF0000) >> 16)) / 255.0                                                        \
 green:((float) ((rgbValue & 0xFF00) >> 8)) / 255.0                                                           \
 blue:((float) (rgbValue & 0xFF)) / 255.0                                                                    \
-alpha:1.0]
+alpha:alphaValue]
 
 @interface PlayerViewController ()<DYDanmuProviderDelegate> {
     BOOL endFile;
@@ -113,7 +113,7 @@ void check_error(int status)
 //    descriptor.params[@"fontFamily"] = @"Helvetica Bold";
     descriptor.params[@"speed"] = @(120+arc4random()%41);
     if (type != 0) {
-        descriptor.params[@"backgroundColor"] = ColorFromRGBHex(0x2894FF);
+        descriptor.params[@"backgroundColor"] = ColorFromRGBHex(0x2894FF,0.5);
         descriptor.params[@"cornerRadius"] = @(16);
     }
     

@@ -17,7 +17,6 @@
 		D21DB3371F74E6EB00A5E5B1 /* ServerModel.m in Sources */ = {isa = PBXBuildFile; fileRef = D21DB32D1F74A47B00A5E5B1 /* ServerModel.m */; };
 		D21DB3381F74E6EB00A5E5B1 /* SocketData.m in Sources */ = {isa = PBXBuildFile; fileRef = D21DB32F1F74A47B00A5E5B1 /* SocketData.m */; };
 		D21DB33E1F74E7B400A5E5B1 /* libicucore.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = D21DB33D1F74E7B400A5E5B1 /* libicucore.tbd */; };
-		D21DB3451F75047B00A5E5B1 /* Settings.m in Sources */ = {isa = PBXBuildFile; fileRef = D21DB3441F75047B00A5E5B1 /* Settings.m */; };
 		D2B813351F724D1C00EF526D /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = D2B813341F724D1C00EF526D /* AppDelegate.m */; };
 		D2B813381F724D1C00EF526D /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = D2B813371F724D1C00EF526D /* main.m */; };
 		D2B8133B1F724D1C00EF526D /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D2B8133A1F724D1C00EF526D /* ViewController.m */; };
@@ -69,8 +68,6 @@
 		D21DB32E1F74A47B00A5E5B1 /* SocketData.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SocketData.h; sourceTree = "<group>"; };
 		D21DB32F1F74A47B00A5E5B1 /* SocketData.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SocketData.m; sourceTree = "<group>"; };
 		D21DB33D1F74E7B400A5E5B1 /* libicucore.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libicucore.tbd; path = usr/lib/libicucore.tbd; sourceTree = SDKROOT; };
-		D21DB3431F75047B00A5E5B1 /* Settings.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Settings.h; sourceTree = "<group>"; };
-		D21DB3441F75047B00A5E5B1 /* Settings.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = Settings.m; sourceTree = "<group>"; };
 		D2B813301F724D1C00EF526D /* Douyu.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Douyu.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		D2B813331F724D1C00EF526D /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		D2B813341F724D1C00EF526D /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
@@ -222,8 +219,6 @@
 				D2B813831F7268D700EF526D /* DYRoomInfo.m */,
 				D2B876371F735A2D00AE844E /* NSString+InfoGet.h */,
 				D2B876381F735A2D00AE844E /* NSString+InfoGet.m */,
-				D21DB3431F75047B00A5E5B1 /* Settings.h */,
-				D21DB3441F75047B00A5E5B1 /* Settings.m */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -432,7 +427,6 @@
 				D2BD056B1F73CBB40066ABDD /* NHDisplayLink.m in Sources */,
 				D2BD056C1F73CBB40066ABDD /* NSLabel.m in Sources */,
 				D2BD056D1F73CBB40066ABDD /* NSValue+iOS.m in Sources */,
-				D21DB3451F75047B00A5E5B1 /* Settings.m in Sources */,
 				D2BD056E1F73CBB40066ABDD /* NSView+UIView.m in Sources */,
 				D2B8133B1F724D1C00EF526D /* ViewController.m in Sources */,
 				D2B813381F724D1C00EF526D /* main.m in Sources */,
@@ -563,14 +557,17 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CODE_SIGN_IDENTITY = "Mac Developer";
+				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				DEVELOPMENT_TEAM = 4GZ937CDY8;
+				DEVELOPMENT_TEAM = "";
 				HEADER_SEARCH_PATHS = /usr/local/include;
 				INFOPLIST_FILE = Douyu/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
 				LIBRARY_SEARCH_PATHS = /usr/local/lib;
 				PRODUCT_BUNDLE_IDENTIFIER = com.Lanskaya.Douyu;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 			};
 			name = Debug;
 		};
@@ -579,14 +576,17 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CODE_SIGN_IDENTITY = "Mac Developer";
+				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				DEVELOPMENT_TEAM = 4GZ937CDY8;
+				DEVELOPMENT_TEAM = "";
 				HEADER_SEARCH_PATHS = /usr/local/include;
 				INFOPLIST_FILE = Douyu/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
 				LIBRARY_SEARCH_PATHS = /usr/local/lib;
 				PRODUCT_BUNDLE_IDENTIFIER = com.Lanskaya.Douyu;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 			};
 			name = Release;
 		};
