@@ -68,7 +68,7 @@ void check_error(int status)
     [self setTitle:self.roomInfo.roomName];
     [self.view.window setTitle:self.roomInfo.roomName];
     dispatch_async(dispatch_get_main_queue(), ^{
-        [self playVideo:self.roomInfo.lowVideoUrl];
+        [self playVideo:self.roomInfo.videoUrl];
         [self loadDanmu];
     });
 }

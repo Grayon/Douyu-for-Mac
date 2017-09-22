@@ -71,6 +71,7 @@
     PlayerViewController *playerViewController = (PlayerViewController *)playerWindowController.contentViewController;
     [playerViewController loadPlayerWithInfo:roomInfo];
     self.playerViewController = playerViewController;
+    [self.view.window performClose:nil];
 }
 
 - (void)showError:(NSString *)string {
@@ -90,6 +91,7 @@
     [self.playerViewController destroyPlayer];
     self.playerWindowController = nil;
     [self reset];
+    [self.view.window makeKeyAndOrderFront:nil];
 }
 
 @end

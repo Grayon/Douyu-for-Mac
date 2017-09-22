@@ -43,6 +43,9 @@ alpha:1.0]
                 _nickname = name;
                 int intColor = [[string componentsFirstMatchedByRegex:colorPattern] intValue];
                 switch (intColor) {
+                    case 1:
+                        _color = ColorFromRGBHex(0xFF2D2D); //红
+                        break;
                     case 2:
                         _color = ColorFromRGBHex(0x2894FF); //蓝
                         break;
@@ -50,16 +53,13 @@ alpha:1.0]
                         _color = [NSColor greenColor];//绿
                         break;
                     case 4:
-                        _color = ColorFromRGBHex(0xFF60AF); //粉
-                        break;
-                    case 5:
                         _color = [NSColor yellowColor];//黄
                         break;
-                    case 6:
-                        _color = ColorFromRGBHex(0x7D7DFF); //紫
+                    case 5:
+                        _color = ColorFromRGBHex(0xE066FF); //紫
                         break;
-                    case 7:
-                        _color = ColorFromRGBHex(0xFF2D2D); //红
+                    case 6:
+                        _color = ColorFromRGBHex(0xFF60AF); //粉
                         break;
                     default:
                         _color = [NSColor whiteColor];
