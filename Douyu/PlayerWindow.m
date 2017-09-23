@@ -30,14 +30,6 @@
     }
     
     switch( [event keyCode] ) {
-        case 25:{ // 9
-            [self handleKeyboardEvnet:event keyDown:YES];
-            break;
-        }
-        case 29:{ // 0
-            [self handleKeyboardEvnet:event keyDown:YES];
-            break;
-        }
         case 53:{ // Esc key
             [self toggleFullScreen:self];
             break;
@@ -52,6 +44,7 @@
             break;
         }
         default:{
+            [self handleKeyboardEvnet:event keyDown:YES];
             break;
         }
     }
@@ -69,7 +62,6 @@
     }
     const char *keyState = keyDown?"keydown":"keyup";
     NSString *str = [self stringByKeyEvent:event];
-    
     const char *args[] = {keyState, [str UTF8String], NULL};
     mpv_command_async(vc.mpv, 0, args);
 }
