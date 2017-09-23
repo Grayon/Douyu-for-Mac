@@ -129,11 +129,11 @@
         [text drawWithRect:drawRect options:self.drawingOptions attributes:@{
                                                                              NSFontAttributeName            : self.font,
                                                                              NSForegroundColorAttributeName : self.textColor,
-                                                                             NSBackgroundColorAttributeName : self.backgroundColor,
-                                                                             NSParagraphStyleAttributeName  : self.drawingParagraphStyle,
+//                                                                             NSBackgroundColorAttributeName : self.backgroundColor,
+//                                                                             NSParagraphStyleAttributeName  : self.drawingParagraphStyle,
 //                                                                             NSShadowAttributeName          : self.dropShadow
                                                                              NSStrokeColorAttributeName : self.dropShadow.shadowColor,
-                                                                             NSStrokeWidthAttributeName : @-2
+                                                                             NSStrokeWidthAttributeName : @-1
                                                                              }];
         
     } else if ((attributedText = self.attributedText)) {

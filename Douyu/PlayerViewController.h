@@ -7,9 +7,12 @@
 //
 
 #import <Cocoa/Cocoa.h>
+#import <mpv/client.h>
 #import "DYRoomInfo.h"
 
 @interface PlayerViewController : NSViewController
+
+@property (assign) mpv_handle *mpv;
 
 - (void)loadPlayerWithInfo:(DYRoomInfo *)info;
 - (void)destroyPlayer;

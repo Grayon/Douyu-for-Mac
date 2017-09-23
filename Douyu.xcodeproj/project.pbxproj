@@ -45,7 +45,9 @@
 		D2BD056C1F73CBB40066ABDD /* NSLabel.m in Sources */ = {isa = PBXBuildFile; fileRef = D2BD05571F73C7F60066ABDD /* NSLabel.m */; };
 		D2BD056D1F73CBB40066ABDD /* NSValue+iOS.m in Sources */ = {isa = PBXBuildFile; fileRef = D2BD05591F73C7F60066ABDD /* NSValue+iOS.m */; };
 		D2BD056E1F73CBB40066ABDD /* NSView+UIView.m in Sources */ = {isa = PBXBuildFile; fileRef = D2BD055B1F73C7F60066ABDD /* NSView+UIView.m */; };
-		D2BD057E1F73D9EC0066ABDD /* libmpv.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = D2BD057D1F73D9EC0066ABDD /* libmpv.dylib */; };
+		D2C083851F756A8900CF286F /* PlayerWindow.m in Sources */ = {isa = PBXBuildFile; fileRef = D2C083841F756A8900CF286F /* PlayerWindow.m */; };
+		D2C0838A1F7588F100CF286F /* libmpv.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = D2BD057D1F73D9EC0066ABDD /* libmpv.dylib */; };
+		D2C083911F76584300CF286F /* MpvClientOGLView.m in Sources */ = {isa = PBXBuildFile; fileRef = D2C083901F76584300CF286F /* MpvClientOGLView.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -126,6 +128,12 @@
 		D2BD055B1F73C7F60066ABDD /* NSView+UIView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "NSView+UIView.m"; sourceTree = "<group>"; };
 		D2BD057B1F73D9B50066ABDD /* libmpv.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libmpv.dylib; path = "../../代码/bilibili-mac-client/bilibili/libs/libmpv.dylib"; sourceTree = "<group>"; };
 		D2BD057D1F73D9EC0066ABDD /* libmpv.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libmpv.dylib; path = ../../../../../usr/local/lib/libmpv.dylib; sourceTree = "<group>"; };
+		D2C083831F756A8900CF286F /* PlayerWindow.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PlayerWindow.h; sourceTree = "<group>"; };
+		D2C083841F756A8900CF286F /* PlayerWindow.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = PlayerWindow.m; sourceTree = "<group>"; };
+		D2C083871F75882000CF286F /* libmpv.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libmpv.dylib; path = Douyu/Frameworks/libmpv.dylib; sourceTree = "<group>"; };
+		D2C0838F1F76584300CF286F /* MpvClientOGLView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MpvClientOGLView.h; sourceTree = "<group>"; };
+		D2C083901F76584300CF286F /* MpvClientOGLView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MpvClientOGLView.m; sourceTree = "<group>"; };
+		D2C083921F765BC400CF286F /* OpenGL.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenGL.framework; path = System/Library/Frameworks/OpenGL.framework; sourceTree = SDKROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -134,7 +142,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				D21DB33E1F74E7B400A5E5B1 /* libicucore.tbd in Frameworks */,
-				D2BD057E1F73D9EC0066ABDD /* libmpv.dylib in Frameworks */,
+				D2C0838A1F7588F100CF286F /* libmpv.dylib in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -193,6 +201,10 @@
 				D2B8133A1F724D1C00EF526D /* ViewController.m */,
 				D2B8763E1F73701300AE844E /* PlayerViewController.h */,
 				D2B8763F1F73701300AE844E /* PlayerViewController.m */,
+				D2C083831F756A8900CF286F /* PlayerWindow.h */,
+				D2C083841F756A8900CF286F /* PlayerWindow.m */,
+				D2C0838F1F76584300CF286F /* MpvClientOGLView.h */,
+				D2C083901F76584300CF286F /* MpvClientOGLView.m */,
 				D2B8133C1F724D1C00EF526D /* Assets.xcassets */,
 				D2B8133E1F724D1C00EF526D /* Main.storyboard */,
 				D2B813411F724D1C00EF526D /* Info.plist */,
@@ -321,6 +333,8 @@
 		D2BD057A1F73D9B50066ABDD /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				D2C083921F765BC400CF286F /* OpenGL.framework */,
+				D2C083871F75882000CF286F /* libmpv.dylib */,
 				D21DB33D1F74E7B400A5E5B1 /* libicucore.tbd */,
 				D2BD057D1F73D9EC0066ABDD /* libmpv.dylib */,
 				D2BD057B1F73D9B50066ABDD /* libmpv.dylib */,
@@ -408,9 +422,11 @@
 				D21DB3361F74E6EB00A5E5B1 /* RegexKitLite.m in Sources */,
 				D21DB3371F74E6EB00A5E5B1 /* ServerModel.m in Sources */,
 				D21DB3381F74E6EB00A5E5B1 /* SocketData.m in Sources */,
+				D2C083851F756A8900CF286F /* PlayerWindow.m in Sources */,
 				D21DB3301F74E53D00A5E5B1 /* DYDanmuProvider.m in Sources */,
 				D2BD055C1F73CBB40066ABDD /* BarrageCanvas.m in Sources */,
 				D2BD055D1F73CBB40066ABDD /* BarrageClock.m in Sources */,
+				D2C083911F76584300CF286F /* MpvClientOGLView.m in Sources */,
 				D2BD055E1F73CBB40066ABDD /* BarrageDescriptor.m in Sources */,
 				D2BD055F1F73CBB40066ABDD /* BarrageDispatcher.m in Sources */,
 				D2BD05601F73CBB40066ABDD /* BarrageRenderer.m in Sources */,

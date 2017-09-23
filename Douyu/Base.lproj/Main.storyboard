@@ -688,13 +688,12 @@
             <objects>
                 <customObject id="B6E-pG-5mQ" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>
                 <windowController storyboardIdentifier="PlayerWindowController" id="RsE-Gh-Bc5" sceneMemberID="viewController">
-                    <window key="window" title="Douyu" allowsToolTipsWhenApplicationIsInactive="NO" autorecalculatesKeyViewLoop="NO" oneShot="NO" releasedWhenClosed="NO" showsToolbarButton="NO" visibleAtLaunch="NO" frameAutosaveName="" animationBehavior="default" id="MbN-wX-phc">
+                    <window key="window" title="Douyu" allowsToolTipsWhenApplicationIsInactive="NO" autorecalculatesKeyViewLoop="NO" restorable="NO" oneShot="NO" showsToolbarButton="NO" visibleAtLaunch="NO" frameAutosaveName="" animationBehavior="default" id="MbN-wX-phc" customClass="PlayerWindow">
                         <windowStyleMask key="styleMask" titled="YES" closable="YES" miniaturizable="YES" resizable="YES"/>
                         <windowCollectionBehavior key="collectionBehavior" fullScreenPrimary="YES"/>
                         <windowPositionMask key="initialPositionMask" leftStrut="YES" rightStrut="YES" topStrut="YES" bottomStrut="YES"/>
                         <rect key="contentRect" x="163" y="199" width="480" height="270"/>
                         <rect key="screenRect" x="0.0" y="0.0" width="1280" height="777"/>
-                        <value key="minSize" type="size" width="480" height="270"/>
                         <connections>
                             <outlet property="delegate" destination="RsE-Gh-Bc5" id="tPW-Cf-5ag"/>
                         </connections>
@@ -768,10 +767,10 @@
                         <rect key="frame" x="0.0" y="0.0" width="480" height="270"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <customView fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="ILb-uM-yiR" userLabel="PlayerView">
+                            <openGLView fixedFrame="YES" useAuxiliaryDepthBufferStencil="NO" allowOffline="YES" translatesAutoresizingMaskIntoConstraints="NO" id="E2V-Lq-gbe" customClass="MpvClientOGLView">
                                 <rect key="frame" x="0.0" y="0.0" width="480" height="270"/>
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                            </customView>
+                            </openGLView>
                             <customView canDrawConcurrently="YES" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="IKQ-Ha-tRd" userLabel="LoadingView">
                                 <rect key="frame" x="0.0" y="0.0" width="480" height="270"/>
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -804,8 +803,8 @@
                         </subviews>
                     </view>
                     <connections>
+                        <outlet property="glView" destination="E2V-Lq-gbe" id="VhB-oC-unc"/>
                         <outlet property="loadingView" destination="IKQ-Ha-tRd" id="D2h-8f-0Xt"/>
-                        <outlet property="playerView" destination="ILb-uM-yiR" id="DHs-LV-FZk"/>
                     </connections>
                 </viewController>
                 <customObject id="4JE-uo-EyL" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>

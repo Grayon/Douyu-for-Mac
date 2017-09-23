@@ -82,11 +82,6 @@
     [alert beginSheetModalForWindow:[self.view window] completionHandler:nil];
 }
 
-- (NSSize)windowWillResize:(NSWindow *)sender toSize:(NSSize)frameSize {
-    frameSize.width=frameSize.height*1.78;
-    return frameSize;
-}
-
 - (void)windowWillClose:(NSNotification *)notification{
     [self.playerViewController destroyPlayer];
     self.playerWindowController = nil;

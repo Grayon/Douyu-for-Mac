@@ -7,11 +7,11 @@
 //
 
 #import "PlayerViewController.h"
-#import <mpv/client.h>
 #import "BarrageRenderer.h"
 #import "BarrageDescriptor.h"
 #import "BarrageWalkTextSprite.h"
 #import "DYDanmuProvider.h"
+#import "MpvClientOGLView.h"
 
 #define RGB(r,g,b,a)    [NSColor colorWithRed:r/255.0 green:g/255.0 blue:b/255.0 alpha:a]
 #define ColorFromRGBHex(rgbValue,alphaValue)                                                                                                \
@@ -23,11 +23,10 @@ alpha:alphaValue]
 @interface PlayerViewController ()<DYDanmuProviderDelegate> {
     BOOL endFile;
 }
-@property (weak) IBOutlet NSView *playerView;
+@property (weak) IBOutlet MpvClientOGLView *glView;
 @property (weak) IBOutlet NSView *loadingView;
 @property (strong) DYRoomInfo *roomInfo;
 @property (strong) DYDanmuProvider *danmuProvider;
-@property (assign) mpv_handle *mpv;
 @property (strong) dispatch_queue_t queue;
 @property (strong) BarrageRenderer *barrageRenderer;
 @end
@@ -62,11 +61,31 @@ void check_error(int status)
     }
 }
 
+static void glupdate(void *ctx)
+{
+    MpvClientOGLView *glView = (__bridge MpvClientOGLView *)ctx;
+    // I'm still not sure what the best way to handle this is, but this
+    // works.
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [glView drawRect];
+    });
+}
+
+static void *get_proc_address(void *ctx, const char *name)
+{
+    CFStringRef symbolName = CFStringCreateWithCString(kCFAllocatorDefault, name, kCFStringEncodingASCII);
+    void *addr = CFBundleGetFunctionPointerForName(CFBundleGetBundleWithIdentifier(CFSTR("com.apple.opengl")), symbolName);
+    CFRelease(symbolName);
+    return addr;
+}
+
 - (void)loadPlayerWithInfo:(DYRoomInfo *)info {
     self.queue = dispatch_queue_create("mpv.quene", DISPATCH_QUEUE_SERIAL);
+    [self.loadingView setWantsLayer:YES];
+    [self.loadingView.layer setBackgroundColor:ColorFromRGBHex(0xecebeb, 1).CGColor];
     self.roomInfo = info;
-    [self setTitle:self.roomInfo.roomName];
-    [self.view.window setTitle:self.roomInfo.roomName];
+    [self setTitle:[NSString stringWithFormat:@"斗鱼%@-%@",self.roomInfo.roomId,self.roomInfo.roomName]];
+    [self.view.window setTitle:self.title];
     dispatch_async(dispatch_get_main_queue(), ^{
         [self playVideo:self.roomInfo.videoUrl];
         [self loadDanmu];
@@ -132,32 +151,14 @@ void check_error(int status)
     // Start Playing Video
     self.mpv  = mpv_create();
     
-    
-    int64_t wid = (intptr_t) self.playerView;
-    check_error(mpv_set_option(self.mpv, "wid", MPV_FORMAT_INT64, &wid));
-    
     [self setMPVOption:"input-default-bindings" :"yes"];
-    [self setMPVOption:"input-vo-keyboard" :"yes"];
-    [self setMPVOption:"input-cursor" :"no"];
-    [self setMPVOption:"osc" :"no"];
-//    [self setMPVOption:"script-opts" :"osc-layout=box,osc-seekbarstyle=bar"];
-//    [self setMPVOption:"user-agent" :[userAgent cStringUsingEncoding:NSUTF8StringEncoding]];
-    [self setMPVOption:"framedrop" :"vo"];
-    [self setMPVOption:"hr-seek" :"yes"];
-//    [self setMPVOption:"fs-black-out-screens" :"yes"];
-//    [self setMPVOption:"vo" :"opengl:pbo:dither=no:alpha=no"];
-    [self setMPVOption:"screenshot-directory" :"~/Desktop"];
-    [self setMPVOption:"screenshot-format" :"png"];
-    
-    
-    [self setMPVOption:"input-media-keys" :"no"];
-    
+    [self setMPVOption:"vo" :"opengl-cb"];
+
     [self setMPVOption:"cache-default" :"75000"];
     
     if(self.title){
         [self setMPVOption:"force-media-title" :[self.title UTF8String]];
     }
-    
     [self setMPVOption: "hwdec" : "videotoolbox-copy"];
     [self setMPVOption: "vf" : "lavfi=\"fps=fps=60:round=down\""];
     
@@ -165,13 +166,19 @@ void check_error(int status)
     check_error(mpv_request_log_messages(self.mpv, "warn"));
     
     check_error(mpv_initialize(self.mpv));
+    mpv_opengl_cb_context *mpvGL = mpv_get_sub_api(self.mpv, MPV_SUB_API_OPENGL_CB);
+    self.glView.mpvGL = mpvGL;
+    mpv_opengl_cb_init_gl(mpvGL, NULL, get_proc_address, NULL);
+    mpv_opengl_cb_set_update_callback(mpvGL, glupdate, (__bridge void *)self.glView);
     
-    // Register to be woken up whenever mpv generates new events.
-    mpv_set_wakeup_callback(self.mpv, wakeup, (__bridge void *) self);
-    
-    // Load the indicated file
-    const char *cmd[] = {"loadfile", [URL cStringUsingEncoding:NSUTF8StringEncoding], NULL};
-    check_error(mpv_command(self.mpv, cmd));
+    dispatch_async(self.queue, ^{
+        // Register to be woken up whenever mpv generates new events.
+        mpv_set_wakeup_callback(self.mpv, wakeup, (__bridge void *) self);
+        
+        // Load the indicated file
+        const char *cmd[] = {"loadfile", [URL cStringUsingEncoding:NSUTF8StringEncoding], NULL};
+        check_error(mpv_command(self.mpv, cmd));
+    });
 }
 
 - (void) readEvents
@@ -203,41 +210,25 @@ void check_error(int status)
             NSLog(@"Stopping player");
             break;
         }
-            
         case MPV_EVENT_LOG_MESSAGE: {
             struct mpv_event_log_message *msg = (struct mpv_event_log_message *)event->data;
             NSLog(@"[%s] %s: %s", msg->prefix, msg->level, msg->text);
             break;
         }
-            
-        case MPV_EVENT_VIDEO_RECONFIG: {
-//            NSApplicationPresentationOptions opts = [[NSApplication sharedApplication ] presentationOptions];
-//            if (opts & NSApplicationPresentationFullScreen) {
-//                NSLog(@"[AutoFS] Already in fullscreen");
-//            }else{
-//                NSLog(@"[AutoFS] Start fullscreen");
-//                [self.view.window toggleFullScreen:self.view.window];
-//            }
-            break;
-        }
-            
         case MPV_EVENT_START_FILE:{
             endFile = NO;
             break;
         }
-            
         case MPV_EVENT_PLAYBACK_RESTART: {
             dispatch_async(dispatch_get_main_queue(), ^{
                 [self.loadingView setHidden:YES];
             });
             break;
         }
-            
         case MPV_EVENT_END_FILE:{
             endFile = YES;
             break;
         }
-            
         case MPV_EVENT_IDLE:{
             if(endFile){
                 dispatch_async(dispatch_get_main_queue(), ^{
@@ -247,17 +238,31 @@ void check_error(int status)
             }
             break;
         }
-            
-        case MPV_EVENT_PAUSE: {
+        case MPV_EVENT_VIDEO_RECONFIG:{
+            mpv_observe_property(self.mpv, 0, "options/keepaspect", MPV_FORMAT_FLAG);
             break;
         }
-        case MPV_EVENT_UNPAUSE: {
-            break;
-        }
-            
         default: ;
             //NSLog(@"Player Event: %s", mpv_event_name(event->event_id));
     }
+}
+
+- (void) mpv_cleanup
+{
+    dispatch_async(dispatch_get_main_queue(), ^(void){
+        mpv_set_wakeup_callback(self.mpv, NULL,NULL);
+        mpv_opengl_cb_uninit_gl(self.glView.mpvGL);
+        mpv_detach_destroy(self.mpv);
+        self.glView.mpvGL = nil;
+        self.mpv = nil;
+        [self.glView clearGLContext];
+    });
+}
+
+- (void)destroyPlayer{
+    [self.danmuProvider disconnect];
+    [self.barrageRenderer stop];
+    [self mpv_cleanup];
 }
 
 - (void)onMpvEvent:(mpv_event *)event{
@@ -267,97 +272,23 @@ void check_error(int status)
         if(!data){
             return;
         }
-        if(strcmp(propety->name, "pause") == 0){
-            int paused = *(int *)data;
-//            [self onPaused:paused];
-        }else if(strcmp(propety->name, "mute") == 0){
-            int mute = *(int *)data;
-//            [self onMuted:mute];
-        }else if(strcmp(propety->name, "sub-visibility") == 0){
-            int vis = *(int *)data;
-//            [self onSubVisibility:vis];
-        }else if(strcmp(propety->name, "options/keepaspect") == 0){
+        if(strcmp(propety->name, "options/keepaspect") == 0){
             int keep = *(int *)data;
             [self onKeepAspect:keep];
-        }else if(strcmp(propety->name, "volume") == 0){
-            double volume = *(double *)data;
-//            [self onVolume:volume];
-        }else if(strcmp(propety->name, "duration") == 0){
-            double duration = *(double *)data;
-//            [self onDuration:duration];
-        }else if(strcmp(propety->name, "time-pos") == 0){
-            double t = *(double *)data;
-//            [self onPlaybackTime:t];
-        }else if(strcmp(propety->name, "cache-used") == 0){
-            double t = *(double *)data;
-//            [self onCacheSize:t];
-        }else if(strcmp(propety->name, "cache") == 0){
-            double t = *(double *)data;
-//            [self onCacheFillRate:t];
-        }
-    }else{
-        mpv_event_id event_id = event->event_id;
-        dispatch_async(dispatch_get_main_queue(), ^(void){
-            [self onOnlyEventId:event_id];
-        });
-    }
-}
-
-- (void)onOnlyEventId:(mpv_event_id)event_id{
-    switch (event_id) {
-        case MPV_EVENT_VIDEO_RECONFIG: {
-            [NSTimer scheduledTimerWithTimeInterval:0.5 target:self selector:@selector(readInitState)
-                                           userInfo:nil repeats:NO];
-            break;
-        }
-        case MPV_EVENT_SEEK: {
-//            [self updateTime];
-            break;
-        }
-        default:{
-            break;
         }
     }
-}
-
-- (void)readInitState{
-    if(!self.mpv){
-        return;
-    }
-    mpv_get_property_async(self.mpv, 0, "pause", MPV_FORMAT_FLAG);
-    mpv_get_property_async(self.mpv, 0, "volume", MPV_FORMAT_DOUBLE);
-    mpv_get_property_async(self.mpv, 0, "time-pos", MPV_FORMAT_DOUBLE);
-    mpv_observe_property(self.mpv, 0, "pause", MPV_FORMAT_FLAG);
-    mpv_observe_property(self.mpv, 0, "mute", MPV_FORMAT_FLAG);
-    mpv_observe_property(self.mpv, 0, "sub-visibility", MPV_FORMAT_FLAG);
-    mpv_observe_property(self.mpv, 0, "options/keepaspect", MPV_FORMAT_FLAG);
-    mpv_observe_property(self.mpv, 0, "volume", MPV_FORMAT_DOUBLE);
-    mpv_observe_property(self.mpv, 0, "duration", MPV_FORMAT_DOUBLE);
 }
 
 - (void)onKeepAspect:(int)keep{
     dispatch_async(dispatch_get_main_queue(), ^(void){
         // call SetFrame to force opengl canvas resize
-        NSView *videoView = self.playerView;
+        NSView *videoView = self.glView;
         NSRect rect = videoView.frame;
         rect.size.width += 1;
         [videoView setFrame:rect];
         rect.size.width -= 1;
         [videoView setFrame:rect];
     });
-}
-
-- (void) mpv_cleanup
-{
-    dispatch_async(self.queue, ^{
-        mpv_set_wakeup_callback(self.mpv, NULL,NULL);
-        mpv_terminate_destroy(self.mpv);
-        self.mpv = nil;
-    });
-}
-- (void)destroyPlayer{
-    [self.danmuProvider disconnect];
-    [self mpv_cleanup];
 }
 
 
