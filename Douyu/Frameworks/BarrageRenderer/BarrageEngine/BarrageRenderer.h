@@ -40,6 +40,7 @@
 /// 弹幕渲染器
 @interface BarrageRenderer : NSObject
 
+@property(nonatomic,assign)BOOL launched;
 #pragma mark - life cycle
 
 #pragma mark - control

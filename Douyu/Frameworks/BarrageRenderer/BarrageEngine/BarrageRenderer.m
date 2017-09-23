@@ -354,4 +354,8 @@ NSString * const kBarrageRendererContextTimestamp = @"kBarrageRendererContextTim
     return _canvas;
 }
 
+- (BOOL)launched {
+    return _clock.launched;
+}
+
 @end

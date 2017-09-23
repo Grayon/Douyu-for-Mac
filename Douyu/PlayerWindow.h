@@ -2,7 +2,7 @@
 //  PlayerWindow.h
 //  Douyu
 //
-//  Created by liuhaichao on 2017/9/22.
+//  Created by Grayon on 2017/9/22.
 //  Copyright © 2017年 Lanskaya. All rights reserved.
 //
 

@@ -33,8 +33,7 @@
     NSDate * _previousDate; // 上一次更新时间
     CGFloat _pausedSpeed; // 暂停之前的时间流速
 }
-///是否处于启动状态
-@property(nonatomic,assign)BOOL launched;
+
 ///逻辑时间
 @property(nonatomic,assign)NSTimeInterval time;
 @end

@@ -7,7 +7,6 @@
 //
 
 #import "PlayerViewController.h"
-#import "BarrageRenderer.h"
 #import "BarrageDescriptor.h"
 #import "BarrageWalkTextSprite.h"
 #import "DYDanmuProvider.h"
@@ -22,13 +21,13 @@ alpha:alphaValue]
 
 @interface PlayerViewController ()<DYDanmuProviderDelegate> {
     BOOL endFile;
+    NSTimer *hideCursorTimer;
 }
 @property (weak) IBOutlet MpvClientOGLView *glView;
 @property (weak) IBOutlet NSView *loadingView;
 @property (strong) DYRoomInfo *roomInfo;
 @property (strong) DYDanmuProvider *danmuProvider;
 @property (strong) dispatch_queue_t queue;
-@property (strong) BarrageRenderer *barrageRenderer;
 @end
 
 @implementation PlayerViewController
@@ -95,6 +94,20 @@ static void *get_proc_address(void *ctx, const char *name)
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do view setup here.
+    if(hideCursorTimer){
+        [hideCursorTimer invalidate];
+        hideCursorTimer = nil;
+    }
+    hideCursorTimer = [NSTimer scheduledTimerWithTimeInterval:5 target:self selector:@selector(hideCursor) userInfo:nil repeats:YES];
+}
+
+- (void)hideCursor{
+    NSInteger windowId = [NSWindow windowNumberAtPoint:[NSEvent mouseLocation] belowWindowWithWindowNumber:0];
+    if(windowId == self.view.window.windowNumber){
+        if (CGEventSourceSecondsSinceLastEventType(kCGEventSourceStateCombinedSessionState, kCGEventMouseMoved) >= 5) {
+            [NSCursor setHiddenUntilMouseMoves:YES];
+        }
+    }
 }
 
 - (void)loadDanmu {

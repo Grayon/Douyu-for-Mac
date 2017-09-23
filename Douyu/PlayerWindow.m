@@ -2,7 +2,7 @@
 //  PlayerWindow.m
 //  Douyu
 //
-//  Created by liuhaichao on 2017/9/22.
+//  Created by Grayon on 2017/9/22.
 //  Copyright © 2017年 Lanskaya. All rights reserved.
 //
 
@@ -39,6 +39,16 @@
                 NSUInteger flags = [[NSApp currentEvent] modifierFlags];
                 if ((flags & NSCommandKeyMask)) {
                     [self toggleFullScreen:self]; // Command+F key to toggle fullscreen
+                }
+            });
+            break;
+        }
+        case 9:{
+            dispatch_async(dispatch_get_main_queue(), ^{
+                if (vc.barrageRenderer.launched) {
+                    [vc.barrageRenderer stop];
+                } else {
+                    [vc.barrageRenderer start];
                 }
             });
             break;

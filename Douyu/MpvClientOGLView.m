@@ -2,7 +2,7 @@
 //  MpvClientOGLView.m
 //  Douyu
 //
-//  Created by liuhaichao on 2017/9/23.
+//  Created by Grayon on 2017/9/23.
 //  Copyright © 2017年 Lanskaya. All rights reserved.
 //
 

@@ -35,7 +35,8 @@
 
 /// 时间流速,默认值为1.0f; 设置必须大于0,否则无效.
 @property(nonatomic,assign)CGFloat speed;
-
+///是否处于启动状态
+@property(nonatomic,assign)BOOL launched;
 /// 启动时间引擎,根据刷新频率返回逻辑时间.
 - (void)start;
 
