@@ -26,7 +26,9 @@
 
 #import "BarrageSprite.h"
 
-@interface BarrageSprite()
+@interface BarrageSprite() {
+    NSPoint _oldPosition;
+}
 
 @end
 
@@ -88,14 +90,22 @@
     _timestamp = timestamp;
     _view = [self bindingView];
     [self configView];
-    //[_view sizeToFit];
-    [_view setAutoresizesSubviews:YES];
     if (!CGSizeEqualToSize(_mandatorySize, CGSizeZero)) {
         _view.frame = CGRectMake(0, 0, _mandatorySize.width, _mandatorySize.height);
     }
+//    [_view setAutoresizingMask:NSViewMaxXMargin|NSViewMinYMargin];
     _origin = [self originInBounds:rect withSprites:sprites];
+    _oldPosition = NSMakePoint(rect.size.width - _origin.x, rect.size.height - _origin.y);
     _view.frame = CGRectMake(_origin.x, _origin.y, self.size.width, self.size.height);
 }
+
+//- (CGPoint)origin {
+//    NSRect rect = _view.superview.bounds;
+//    if (rect.size.width - _origin.x != _oldPosition.x) {
+//        _origin = NSMakePoint(rect.size.width - _oldPosition.x, rect.size.height - _oldPosition.y);
+//    }
+//    return _origin;
+//}
 
 - (void)configView
 {

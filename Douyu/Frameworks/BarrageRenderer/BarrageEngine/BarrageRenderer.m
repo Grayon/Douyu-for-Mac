@@ -26,77 +26,50 @@
 
 #import "BarrageRenderer.h"
 #import "BarrageCanvas.h"
-#import "BarrageDispatcher.h"
 #import "BarrageSprite.h"
 #import "BarrageSpriteFactory.h"
-#import "BarrageClock.h"
 #import "BarrageDescriptor.h"
 #import "NSView+UIView.h"
 #import "NSValue+iOS.h"
+#import "BarrageWalkTextSprite.h"
 
 NSString * const kBarrageRendererContextCanvasBounds = @"kBarrageRendererContextCanvasBounds";   // 画布大小
 NSString * const kBarrageRendererContextRelatedSpirts = @"kBarrageRendererContextRelatedSpirts"; // 相关精灵
 NSString * const kBarrageRendererContextTimestamp = @"kBarrageRendererContextTimestamp";         // 时间戳
 
-@interface BarrageRenderer()<BarrageDispatcherDelegate>
+@interface BarrageRenderer()
 {
-    BarrageDispatcher * _dispatcher; //调度器
     BarrageCanvas * _canvas; // 画布
-    BarrageClock * _clock;
-    NSMutableDictionary * _spriteClassMap;
-    __block NSTimeInterval _time;
     NSMutableDictionary * _context; // 渲染器上下文
     
-    NSMutableArray * _preloadedDescriptors; //预加载的弹幕
     NSMutableArray * _records;//记录数组
-    NSDate * _startTime; //如果是nil,表示弹幕渲染不在运行中; 否则,表示开始的时间
-    NSTimeInterval _pausedDuration; // 暂停持续时间
-    NSDate * _pausedTime; // 上次暂停时间; 如果为nil, 说明当前没有暂停
 }
-@property(nonatomic,assign)NSTimeInterval pausedDuration; // 暂停时间
+@property(nonatomic,strong)NSMutableArray *sprites;
 @end
 
 @implementation BarrageRenderer
-@synthesize pausedDuration = _pausedDuration;
 #pragma mark - init
 - (instancetype)init
 {
     if (self = [super init]) {
         _canvas = [[BarrageCanvas alloc]init];
-        _spriteClassMap = [[NSMutableDictionary alloc]init];
+        _sprites = [[NSMutableArray alloc] init];
         _zIndex = NO;
         _context = [[NSMutableDictionary alloc]init];
         _recording = NO;
-        _startTime = nil; // 尚未开始
-        _pausedTime = nil;
-        _redisplay = NO;
-        self.pausedDuration = 0;
-        [self initClock];
     }
     return self;
-}
-
-/// 初始化时钟
-- (void)initClock
-{
-    __weak id weakSelf = self;
-    _clock = [BarrageClock clockWithHandler:^(NSTimeInterval time){
-        BarrageRenderer * strongSelf = weakSelf;
-        _time = time;
-        [strongSelf update];
-    }];
 }
 
 #pragma mark - control
 - (void)receive:(BarrageDescriptor *)descriptor
 {
-    if (!_startTime) { // 如果没有启动,则抛弃接收弹幕
+    if (!_launched) {
         return;
     }
     BarrageDescriptor * descriptorCopy = [descriptor copy];
-    [self convertDelayTime:descriptorCopy];
     BarrageSprite * sprite = [BarrageSpriteFactory createSpriteWithDescriptor:descriptorCopy];
-    [_dispatcher addSprite:sprite];
+    [self activeSprite:sprite];
     if (_recording) {
         [self recordDescriptor:descriptorCopy];
     }
@@ -104,116 +77,17 @@ NSString * const kBarrageRendererContextTimestamp = @"kBarrageRendererContextTim
 
 - (void)start
 {
-    if (!_startTime) { // 尚未启动,则初始化时间系统
-        _startTime = [NSDate date];
-        _records = [[NSMutableArray alloc]init];
-        _dispatcher = [[BarrageDispatcher alloc]init];
-        _dispatcher.cacheDeadSprites = self.redisplay;
-        _dispatcher.delegate = self;
-    }
-    else if(_pausedTime)
-    {
-        _pausedDuration += [[NSDate date]timeIntervalSinceDate:_pausedTime];
-    }
-    _pausedTime = nil;
-    [_clock start];
-    if (_preloadedDescriptors.count) {
-        for (BarrageDescriptor * descriptor in _preloadedDescriptors) {
-            [self receive:descriptor];
-        }
-        [_preloadedDescriptors removeAllObjects];
-    }
-}
-
-- (void)pause
-{
-    if (!_startTime) { // 没有运行, 则暂停无效
-        return;
-    }
-    if (!_pausedTime) { // 当前没有暂停
-        [_clock pause];
-        _pausedTime = [NSDate date];
-    }
-    else
-    {
-        _pausedDuration += [[NSDate date]timeIntervalSinceDate:_pausedTime];
-        _pausedTime = [NSDate date];
-    }
+    _launched = YES;
 }
 
 - (void)stop
 {
-    _startTime = nil;
-    [_clock stop];
-    [_dispatcher deactiveAllSprites];
-}
-
-- (void)setSpeed:(CGFloat)speed
-{
-    if (speed > 0) {
-        _clock.speed = speed;
-    }
-}
-
-- (CGFloat)speed
-{
-    return _clock.speed;
-}
-
-- (void)setRedisplay:(BOOL)redisplay
-{
-    _redisplay = redisplay;
-    if (_dispatcher) {
-        _dispatcher.cacheDeadSprites = _redisplay;
-    }
-}
-
-- (NSTimeInterval)pausedDuration
-{
-    return _pausedDuration + (_pausedTime?[[NSDate date]timeIntervalSinceDate:_pausedTime]:0); // 当前处于暂停当中
-}
-
-/// 获取当前时间
-- (NSTimeInterval)currentTime
-{
-    NSTimeInterval currentTime = 0.0f;
-    if (self.delegate && [self.delegate respondsToSelector:@selector(timeForBarrageRenderer:)]) {
-        currentTime = [self.delegate timeForBarrageRenderer:self];
-    }
-    else
-    {
-        currentTime = [[NSDate date]timeIntervalSinceDate:_startTime]-self.pausedDuration;
-    }
-    return currentTime;
-}
-
-/// 转换descriptor的delay时间(相对于start), 如果delay<0, 则将delay置为0
-- (void)convertDelayTime:(BarrageDescriptor *)descriptor
-{
-    NSTimeInterval delay = [[descriptor.params objectForKey:@"delay"]doubleValue];
-    delay += [self currentTime];
-    if (delay < 0) {
-        delay = 0;
-    }
-    [descriptor.params setObject:@(delay) forKey:@"delay"];
-}
-
-- (NSInteger)spritesNumberWithName:(NSString *)spriteName
-{
-    NSInteger number = 0;
-    if (spriteName) {
-        Class class = NSClassFromString(spriteName);
-        if (class) {
-            for (BarrageSprite * sprite in _dispatcher.activeSprites) {
-                number += [sprite class] == class;
-            }
-        }
-    }
-    else
-    {
-        number = _dispatcher.activeSprites.count;
-    }
-    return number;
+    _launched = NO;
+    [self.sprites enumerateObjectsUsingBlock:^(BarrageSprite *sprite, NSUInteger idx, BOOL * _Nonnull stop) {
+        [sprite.view.layer removeAllAnimations];
+        [sprite.view removeFromSuperview];
+    }];
+    [self.sprites removeAllObjects];
 }
 
 #pragma mark - record
@@ -237,114 +111,38 @@ NSString * const kBarrageRendererContextTimestamp = @"kBarrageRendererContextTim
     return [_records copy];
 }
 
-- (void)load:(NSArray *)descriptors
-{
-    if (_startTime) {
-        for (BarrageDescriptor * descriptor in descriptors) {
-            [self receive:descriptor];
-        }
-    }
-    else
-    {
-        if (!_preloadedDescriptors) {
-            _preloadedDescriptors = [[NSMutableArray alloc]init];
-        }
-        for (BarrageDescriptor * descriptor in descriptors) {
-            [_preloadedDescriptors addObject:[descriptor copy]];
-        }
-    }
-
-}
-
-#pragma mark - update
-/// 每个刷新周期执行一次
-- (void)update
-{
-    [_dispatcher dispatchSprites]; // 分发精灵
-    for (BarrageSprite * sprite in _dispatcher.activeSprites) {
-        [sprite updateWithTime:_time];
-    }
-}
-
 #pragma mark - BarrageDispatcherDelegate
-
-- (BOOL)shouldActiveSprite:(BarrageSprite *)sprite
-{
-    return !_pausedTime;
-}
-
-- (void)willActiveSprite:(BarrageSprite *)sprite
+- (void)activeSprite:(BarrageSprite *)sprite
 {
     NSValue * value = [NSValue valueWithCGRect:_canvas.bounds];
     [_context setObject:value forKey:kBarrageRendererContextCanvasBounds];
-    
-    NSArray * itemMap = [_spriteClassMap objectForKey:NSStringFromClass([sprite class])];
-    if (itemMap) {
-        [_context setObject:[itemMap copy] forKey:kBarrageRendererContextRelatedSpirts];
-    }
-    
-    [_context setObject:@(_time) forKey:kBarrageRendererContextTimestamp];
-    
-    NSInteger index = [self viewIndexOfSprite:sprite];
+    [_context setObject:[self.sprites copy] forKey:kBarrageRendererContextRelatedSpirts];
+    [_context setObject:@([[NSDate date] timeIntervalSince1970]) forKey:kBarrageRendererContextTimestamp];
     
     [sprite activeWithContext:_context];
-    [self indexAddSprite:sprite];
-    [_canvas insertSubview:sprite.view atIndex:index];
-}
-
-- (NSUInteger)viewIndexOfSprite:(BarrageSprite *)sprite
-{
-    NSInteger index = _dispatcher.activeSprites.count;
+    [_canvas addSubview:sprite.view];
+    [self.sprites addObject:sprite];
     
-    /// 添加根据z-index 增序排列
-    if (self.zIndex) {
-        NSMutableArray * preSprites = [[NSMutableArray alloc]initWithArray:_dispatcher.activeSprites];
-        [preSprites addObject:sprite];
-        NSArray * sortedSprites = [preSprites sortedArrayUsingComparator:^NSComparisonResult(id obj1, id obj2) {
-            return [@(((BarrageSprite *)obj1).z_index) compare:@(((BarrageSprite *)obj2).z_index)];
-        }];
-        index = [sortedSprites indexOfObject:sprite];
-    }
-    return index;
+    float speed = [[sprite valueForKey:@"speed"] floatValue];
+    CABasicAnimation *anim = [CABasicAnimation animation];
+    anim.duration = (_canvas.bounds.size.width + sprite.size.width*2)/speed;
+    anim.keyPath = @"position";
+    anim.toValue = [sprite valueForKey:@"_destination"];
+    anim.removedOnCompletion = NO;
+    anim.fillMode = kCAFillModeForwards;
+    [sprite.view.layer addAnimation:anim forKey:nil];
+    __weak BarrageSprite *weak_sprite = sprite;
+    __weak BarrageRenderer *weak_self = self;
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(anim.duration * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+        [weak_self deactiveSprite:weak_sprite];
+    });
 }
 
-- (void)willDeactiveSprite:(BarrageSprite *)sprite
+- (void)deactiveSprite:(BarrageSprite *)sprite
 {
-    [self indexRemoveSprite:sprite];
+    [self.sprites removeObject:sprite];
     [sprite.view removeFromSuperview];
-}
-
-- (NSTimeInterval)timeForBarrageDispatcher:(BarrageDispatcher *)dispatcher
-{
-    if ([dispatcher isEqual:_dispatcher]) {
-        return [self currentTime];
-    }
-    return 0.0f; // 错误情况
-}
-
-#pragma mark - indexing className-sprites
-/// 更新活跃精灵类型索引
-- (void)indexAddSprite:(BarrageSprite *)sprite
-{
-    NSString * className = NSStringFromClass([sprite class]);
-    NSMutableArray * itemMap = [_spriteClassMap objectForKey:className];
-    if (!itemMap) {
-        itemMap = [[NSMutableArray alloc]init];
-        [_spriteClassMap setObject:itemMap forKey:className];
-    }
-    [itemMap addObject:sprite];
-}
-
-/// 更新活跃精灵类型索引
-- (void)indexRemoveSprite:(BarrageSprite *)sprite
-{
-    NSString * className = NSStringFromClass([sprite class]);
-    NSMutableArray * itemMap = [_spriteClassMap objectForKey:className];
-    if (!itemMap) {
-        itemMap = [[NSMutableArray alloc]init];
-        [_spriteClassMap setObject:itemMap forKey:className];
-    }
-    [itemMap removeObject:sprite];
+    [sprite.view.layer removeAllAnimations];
 }
 
 #pragma mark - attributes
@@ -352,10 +150,6 @@ NSString * const kBarrageRendererContextTimestamp = @"kBarrageRendererContextTim
 - (NSView *)view
 {
     return _canvas;
-}
-
-- (BOOL)launched {
-    return _clock.launched;
 }
 
 @end

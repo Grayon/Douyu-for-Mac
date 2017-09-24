@@ -10,7 +10,7 @@
 #import "BarrageDescriptor.h"
 #import "BarrageWalkTextSprite.h"
 #import "DYDanmuProvider.h"
-#import "MpvClientOGLView.h"
+
 
 #define RGB(r,g,b,a)    [NSColor colorWithRed:r/255.0 green:g/255.0 blue:b/255.0 alpha:a]
 #define ColorFromRGBHex(rgbValue,alphaValue)                                                                                                \
@@ -23,7 +23,7 @@ alpha:alphaValue]
     BOOL endFile;
     NSTimer *hideCursorTimer;
 }
-@property (weak) IBOutlet MpvClientOGLView *glView;
+
 @property (weak) IBOutlet NSView *loadingView;
 @property (strong) DYRoomInfo *roomInfo;
 @property (strong) DYDanmuProvider *danmuProvider;
@@ -83,7 +83,7 @@ static void *get_proc_address(void *ctx, const char *name)
     [self.loadingView setWantsLayer:YES];
     [self.loadingView.layer setBackgroundColor:ColorFromRGBHex(0xecebeb, 1).CGColor];
     self.roomInfo = info;
-    [self setTitle:[NSString stringWithFormat:@"斗鱼%@-%@",self.roomInfo.roomId,self.roomInfo.roomName]];
+    [self setTitle:[NSString stringWithFormat:@"%@【%@】%@",self.roomInfo.nickName,self.roomInfo.roomId,self.roomInfo.roomName]];
     [self.view.window setTitle:self.title];
     dispatch_async(dispatch_get_main_queue(), ^{
         [self playVideo:self.roomInfo.videoUrl];
@@ -126,13 +126,11 @@ static void *get_proc_address(void *ctx, const char *name)
 }
 
 - (void)onNewMessage:(NSString *)cmContent :(NSString *)userName :(int)ftype :(int)fsize :(NSColor *)color{
-    dispatch_async(dispatch_get_main_queue(), ^(void){
-        if (ftype == 0) {
-            [self addSpritToVideo:ftype content:cmContent size:fsize color:color];
-        } else {
-            [self addSpritToVideo:ftype content:[NSString stringWithFormat:@"  %@：%@  ",userName,cmContent] size:fsize+2 color:color];
-        }
-    });
+    if (ftype == 0) {
+        [self addSpritToVideo:ftype content:cmContent size:fsize color:color];
+    } else {
+        [self addSpritToVideo:ftype content:[NSString stringWithFormat:@"  %@：%@  ",userName,cmContent] size:fsize+2 color:color];
+    }
 }
 
 - (void)addSpritToVideo:(int)type content:(NSString*)content size:(int)size color:(NSColor *)color
@@ -142,8 +140,8 @@ static void *get_proc_address(void *ctx, const char *name)
     descriptor.params[@"text"] = content;
     descriptor.params[@"textColor"] = color;
     descriptor.params[@"fontSize"] = @(size);
-//    descriptor.params[@"fontFamily"] = @"Helvetica Bold";
-    descriptor.params[@"speed"] = @(120+arc4random()%41);
+    descriptor.params[@"fontFamily"] = @"Helvetica Bold";
+    descriptor.params[@"speed"] = @(100+arc4random()%41);
     if (type != 0) {
         descriptor.params[@"backgroundColor"] = ColorFromRGBHex(0x2894FF,0.5);
         descriptor.params[@"cornerRadius"] = @(16);
@@ -151,7 +149,9 @@ static void *get_proc_address(void *ctx, const char *name)
     
     // type is not supported right
     descriptor.params[@"direction"] = @(BarrageWalkDirectionR2L);
-    [self.barrageRenderer receive:descriptor];
+    dispatch_async(dispatch_get_main_queue(), ^(void){
+        [self.barrageRenderer receive:descriptor];
+    });
 }
 
 - (void)setMPVOption:(const char *)name :(const char*)data{
@@ -172,8 +172,8 @@ static void *get_proc_address(void *ctx, const char *name)
     if(self.title){
         [self setMPVOption:"force-media-title" :[self.title UTF8String]];
     }
-    [self setMPVOption: "hwdec" : "videotoolbox-copy"];
-    [self setMPVOption: "vf" : "lavfi=\"fps=fps=60:round=down\""];
+    [self setMPVOption:"opengl-hwdec-interop" :"auto"];
+    [self setMPVOption: "vf" : "lavfi=\"fps=60:round=down\""];
     
     // request important errors
     check_error(mpv_request_log_messages(self.mpv, "warn"));

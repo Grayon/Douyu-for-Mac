@@ -10,10 +10,12 @@
 #import <mpv/client.h>
 #import "DYRoomInfo.h"
 #import "BarrageRenderer.h"
+#import "MpvClientOGLView.h"
 
 @interface PlayerViewController : NSViewController
 
 @property (assign) mpv_handle *mpv;
+@property (weak) IBOutlet MpvClientOGLView *glView;
 @property (strong) BarrageRenderer *barrageRenderer;
 
 - (void)loadPlayerWithInfo:(DYRoomInfo *)info;

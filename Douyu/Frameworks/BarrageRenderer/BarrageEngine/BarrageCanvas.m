@@ -33,6 +33,7 @@
     if (self = [super init]) {
         //self.userInteractionEnabled = NO;
         //self.backgroundColor = [NSColor clearColor];
+//        [self setAutoresizesSubviews:YES];
         [self.layer setBackgroundColor:[NSColor clearColor].CGColor]; //RGB plus Alpha Channel
     }
     return self;

@@ -12,6 +12,7 @@
 
 @property (nonatomic, copy) NSString *roomId;
 @property (nonatomic, copy) NSString *roomName;
+@property (nonatomic, copy) NSString *nickName;
 @property (nonatomic, strong) NSArray *servers;
 @property (nonatomic, copy) NSString *hlsUrl;
 @property (nonatomic, copy) NSString *videoUrl;

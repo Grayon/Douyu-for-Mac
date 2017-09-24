@@ -47,16 +47,16 @@ alpha:1.0]
                         _color = ColorFromRGBHex(0xFF2D2D); //红
                         break;
                     case 2:
-                        _color = ColorFromRGBHex(0x2894FF); //蓝
+                        _color = ColorFromRGBHex(0x00ccff); //蓝
                         break;
                     case 3:
-                        _color = [NSColor greenColor];//绿
+                        _color = ColorFromRGBHex(0x9AFF02);//绿
                         break;
                     case 4:
                         _color = [NSColor yellowColor];//黄
                         break;
                     case 5:
-                        _color = ColorFromRGBHex(0xE066FF); //紫
+                        _color = ColorFromRGBHex(0xBF3EFF); //紫
                         break;
                     case 6:
                         _color = ColorFromRGBHex(0xFF60AF); //粉

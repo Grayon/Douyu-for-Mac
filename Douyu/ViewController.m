@@ -10,7 +10,9 @@
 #import "DYRoomInfo.h"
 #import "PlayerViewController.h"
 
-@interface ViewController ()<NSWindowDelegate>
+@interface ViewController ()<NSWindowDelegate> {
+    NSTimer *resizingTimer;
+}
 
 @property (strong) NSWindowController *playerWindowController;
 @property (weak) PlayerViewController *playerViewController;
@@ -72,6 +74,17 @@
     [playerViewController loadPlayerWithInfo:roomInfo];
     self.playerViewController = playerViewController;
     [self.view.window performClose:nil];
+}
+
+- (NSSize)windowWillResize:(NSWindow *)sender toSize:(NSSize)frameSize {
+    [resizingTimer invalidate];
+    resizingTimer = [NSTimer scheduledTimerWithTimeInterval:0.3 target:self selector:@selector(resumePlay) userInfo:nil repeats:NO];
+    [self.playerViewController.glView setPause:YES];
+    return frameSize;
+}
+
+- (void)resumePlay {
+    [self.playerViewController.glView setPause:NO];
 }
 
 - (void)showError:(NSString *)string {

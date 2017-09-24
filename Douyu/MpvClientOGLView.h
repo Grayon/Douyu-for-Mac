@@ -12,6 +12,7 @@
 
 @interface MpvClientOGLView : NSOpenGLView
 @property mpv_opengl_cb_context *mpvGL;
+@property BOOL pause;
 - (void)drawRect;
 - (void)fillBlack;
 @end

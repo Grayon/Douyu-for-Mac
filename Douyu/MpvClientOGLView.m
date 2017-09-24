@@ -8,22 +8,18 @@
 
 #import "MpvClientOGLView.h"
 
+@interface MpvClientOGLView (){
+    NSRect rect;
+}
+
+@end
+
 @implementation MpvClientOGLView
 
 - (instancetype)initWithCoder:(NSCoder *)decoder {
     if (self = [super initWithCoder:decoder]) {
         [self setWantsBestResolutionOpenGLSurface:YES];
-        NSOpenGLPixelFormatAttribute attributes[] = {
-            NSOpenGLPFADoubleBuffer,
-            0
-        };
-        [self setPixelFormat:[[NSOpenGLPixelFormat alloc] initWithAttributes:attributes]];
-        [self setAutoresizingMask:NSViewWidthSizable|NSViewHeightSizable];
-        // swap on vsyncs
-        GLint swapInt = 1;
-        [[self openGLContext] setValues:&swapInt forParameter:NSOpenGLCPSwapInterval];
-        [[self openGLContext] makeCurrentContext];
-        self.mpvGL = nil;
+        rect = [self convertRectToBacking:[self bounds]];
     }
     return self;
 }
@@ -36,13 +32,14 @@
 
 - (void)drawRect
 {
-    if (self.mpvGL) {
-        NSRect rect = [self convertRectToBacking:[self bounds]];
+    if (self.mpvGL && !self.pause) {
         mpv_opengl_cb_draw(self.mpvGL, 0, rect.size.width, -rect.size.height);
     }
-    else
+    else{
+        rect = [self convertRectToBacking:[self bounds]];
         [self fillBlack];
-    [[self openGLContext] flushBuffer];
+    }
+    glFlush();
 }
 
 - (void)drawRect:(NSRect)dirtyRect

@@ -49,21 +49,25 @@
         self.showStatus = NO;
         return YES;
     }
+    NSString *nickName = roomDic[@"nickname"];
     NSString *roomName = roomDic[@"room_name"];
     NSArray *servers = roomDic[@"servers"];
     NSString *rtmpPrefix = roomDic[@"rtmp_url"];
     NSString *rtmpSuffix = roomDic[@"rtmp_live"];
     NSString *videoUrl = [NSString stringWithFormat:@"%@/%@",rtmpPrefix,rtmpSuffix];
-    NSString *lowVideoUrl = [NSString stringWithFormat:@"%@/%@",rtmpPrefix,roomDic[@"rtmp_multi_bitrate"][@"middle"]];
-    NSString *middleVideoUrl = [NSString stringWithFormat:@"%@/%@",rtmpPrefix,roomDic[@"rtmp_multi_bitrate"][@"middle2"]];
     NSString *hlsUrl = roomDic[@"hls_url"];
+    if ([roomDic[@"rtmp_multi_bitrate"] isKindOfClass:[NSDictionary class]]) {
+        NSString *lowVideoUrl = [NSString stringWithFormat:@"%@/%@",rtmpPrefix,roomDic[@"rtmp_multi_bitrate"][@"middle"]];
+        NSString *middleVideoUrl = [NSString stringWithFormat:@"%@/%@",rtmpPrefix,roomDic[@"rtmp_multi_bitrate"][@"middle2"]];
+        self.lowVideoUrl = lowVideoUrl;
+        self.middleVideoUrl = middleVideoUrl;
+    }
     self.roomId = roomId;
     self.roomName = roomName;
+    self.nickName = nickName;
     self.servers = servers;
     self.hlsUrl = hlsUrl;
     self.videoUrl = videoUrl;
-    self.lowVideoUrl = lowVideoUrl;
-    self.middleVideoUrl = middleVideoUrl;
     return YES;
 }
 
