@@ -7,7 +7,7 @@
 - v 键开启关闭弹幕
 # Install
 ## 下载内置 library 版本
-[Douyu-with-library.zip](https://github.com/Grayon/Douyu-for-Mac/releases/download/v0.1.2/Douyu-with-library.zip)
+[Douyu-with-library.zip](https://github.com/Grayon/Douyu-for-Mac/releases)
 ## 或自行安装 mpv
 ### 1.安装 homebrew 
 ```bash
@@ -17,6 +17,8 @@
 ```bash
 brew install mpv
 ```
+### 3.下载最新 releases 包
+[Douyu.zip](https://github.com/Grayon/Douyu-for-Mac/releases)
 # Screenshot
 ![](http://ww2.sinaimg.cn/large/0060lm7Tly1fjsi5xj9czj30qo0g8dpt.jpg)
 ![](http://ww3.sinaimg.cn/large/0060lm7Tly1fjvwhu4colj31kw0vyb2c.jpg)
