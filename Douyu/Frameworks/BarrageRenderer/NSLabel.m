@@ -129,9 +129,6 @@
         [text drawWithRect:drawRect options:self.drawingOptions attributes:@{
                                                                              NSFontAttributeName            : self.font,
                                                                              NSForegroundColorAttributeName : self.textColor,
-//                                                                             NSBackgroundColorAttributeName : self.backgroundColor,
-//                                                                             NSParagraphStyleAttributeName  : self.drawingParagraphStyle,
-//                                                                             NSShadowAttributeName          : self.dropShadow
                                                                              NSStrokeColorAttributeName : self.dropShadow.shadowColor,
                                                                              NSStrokeWidthAttributeName : @-1
                                                                              }];
@@ -156,9 +153,9 @@
         if (text) {
             _drawingRect = [text boundingRectWithSize:size options:self.drawingOptions attributes:@{
                                                                                                     NSFontAttributeName            : self.font,
-                                                                                                    NSForegroundColorAttributeName : self.textColor,
-                                                                                                    NSBackgroundColorAttributeName : self.backgroundColor,
-                                                                                                    NSParagraphStyleAttributeName  : self.drawingParagraphStyle,
+                                                                                                    NSForegroundColorAttributeName : self.textColor
+//                                                                                                    NSBackgroundColorAttributeName : self.backgroundColor,
+//                                                                                                    NSParagraphStyleAttributeName  : self.drawingParagraphStyle,
                                                                                                     }];
         } else {
             _drawingRect = [attributedText boundingRectWithSize:size options:self.drawingOptions];

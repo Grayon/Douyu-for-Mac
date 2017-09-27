@@ -108,7 +108,7 @@
         }
     }
     
-    static BOOL const AVAERAGE_STRATEGY = NO; // YES:条纹平均精灵策略(体验会好一些); NO:最快时间策略
+//    static BOOL const AVAERAGE_STRATEGY = NO; // YES:条纹平均精灵策略(体验会好一些); NO:最快时间策略
     static NSUInteger const STRIP_NUM = 160; // 总共的网格条数
     NSTimeInterval stripMaxActiveTimes[STRIP_NUM]={0}; // 每一条网格 已有精灵中最后退出屏幕的时间
     NSUInteger stripSpriteNumbers[STRIP_NUM]={0}; // 每一条网格 包含精灵的数目
@@ -169,7 +169,7 @@
         }
     }
     if (availableFrom > STRIP_NUM - overlandStripNum) { // 那就是没有找到喽
-        availableFrom = AVAERAGE_STRATEGY?leastActiveSpriteStrip:leastActiveTimeStrip; // 使用最小个数 or 使用最短时间
+        availableFrom = arc4random()%160;//AVAERAGE_STRATEGY?leastActiveSpriteStrip:leastActiveTimeStrip; // 使用最小个数 or 使用最短时间
     }
     
     CGPoint origin = CGPointZero;

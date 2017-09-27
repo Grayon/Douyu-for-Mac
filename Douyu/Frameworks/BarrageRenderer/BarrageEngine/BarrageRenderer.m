@@ -124,10 +124,10 @@ NSString * const kBarrageRendererContextTimestamp = @"kBarrageRendererContextTim
     [self.sprites addObject:sprite];
     
     float speed = [[sprite valueForKey:@"speed"] floatValue];
-    CABasicAnimation *anim = [CABasicAnimation animation];
+    CABasicAnimation *anim = [CABasicAnimation animationWithKeyPath:@"position"];
     anim.duration = (_canvas.bounds.size.width + sprite.size.width*2)/speed;
-    anim.keyPath = @"position";
-    anim.toValue = [sprite valueForKey:@"_destination"];
+    anim.fromValue = [NSValue valueWithCGPoint:sprite.origin];
+    anim.toValue = [sprite valueForKey:@"destination"];
     anim.removedOnCompletion = NO;
     anim.fillMode = kCAFillModeForwards;
     [sprite.view.layer addAnimation:anim forKey:nil];

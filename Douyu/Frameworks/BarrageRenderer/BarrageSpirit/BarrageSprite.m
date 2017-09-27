@@ -109,9 +109,10 @@
 
 - (void)configView
 {
-    if (self.borderWidth || self.cornerRadius) {
-        [_view setWantsLayer:YES]; // view's backing store is using a Core Animation Layer
-    }
+//    if (self.borderWidth || self.cornerRadius) {
+//        [_view setWantsLayer:YES]; // view's backing store is using a Core Animation Layer
+//    }
+    [_view setWantsLayer:YES];
     if (self.cornerRadius) {
         _view.layer.cornerRadius = self.cornerRadius;
         //_view.clipsToBounds = YES;

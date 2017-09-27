@@ -83,9 +83,14 @@ static void *get_proc_address(void *ctx, const char *name)
     [self.loadingView setWantsLayer:YES];
     [self.loadingView.layer setBackgroundColor:ColorFromRGBHex(0xecebeb, 1).CGColor];
     self.roomInfo = info;
-    [self setTitle:[NSString stringWithFormat:@"%@【%@】%@",self.roomInfo.nickName,self.roomInfo.roomId,self.roomInfo.roomName]];
+    [self setTitle:[NSString stringWithFormat:@"【%@（%@）】%@",self.roomInfo.nickName,self.roomInfo.roomId,self.roomInfo.roomName]];
     [self.view.window setTitle:self.title];
     dispatch_async(dispatch_get_main_queue(), ^{
+#if 0
+        if (self.roomInfo.lowVideoUrl.length > 0)
+            [self playVideo:self.roomInfo.lowVideoUrl];
+        else
+#endif
         [self playVideo:self.roomInfo.videoUrl];
         [self loadDanmu];
     });
@@ -141,7 +146,7 @@ static void *get_proc_address(void *ctx, const char *name)
     descriptor.params[@"textColor"] = color;
     descriptor.params[@"fontSize"] = @(size);
     descriptor.params[@"fontFamily"] = @"Helvetica Bold";
-    descriptor.params[@"speed"] = @(100+arc4random()%41);
+    descriptor.params[@"speed"] = @(120+arc4random()%61);
     if (type != 0) {
         descriptor.params[@"backgroundColor"] = ColorFromRGBHex(0x2894FF,0.5);
         descriptor.params[@"cornerRadius"] = @(16);

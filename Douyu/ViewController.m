@@ -64,7 +64,6 @@
     }
     self.playButton.enabled = NO;
     self.roomTextField.enabled = NO;
-    
     NSWindowController *playerWindowController = [[NSStoryboard storyboardWithName:@"Main" bundle:nil] instantiateControllerWithIdentifier:@"PlayerWindowController"];
     [playerWindowController.window center];
     [playerWindowController.window makeKeyAndOrderFront:nil];
@@ -84,7 +83,16 @@
 }
 
 - (void)resumePlay {
-    [self.playerViewController.glView setPause:NO];
+    dispatch_async(dispatch_get_main_queue(), ^(void){
+        // call SetFrame to force opengl canvas resize
+        NSView *videoView = self.playerViewController.glView;
+        NSRect rect = videoView.frame;
+        rect.size.width += 1;
+        [videoView setFrame:rect];
+        rect.size.width -= 1;
+        [videoView setFrame:rect];
+        [self.playerViewController.glView setPause:NO];
+    });
 }
 
 - (void)showError:(NSString *)string {
