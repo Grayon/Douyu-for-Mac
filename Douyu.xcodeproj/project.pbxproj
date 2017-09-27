@@ -17,6 +17,7 @@
 		D21DB3371F74E6EB00A5E5B1 /* ServerModel.m in Sources */ = {isa = PBXBuildFile; fileRef = D21DB32D1F74A47B00A5E5B1 /* ServerModel.m */; };
 		D21DB3381F74E6EB00A5E5B1 /* SocketData.m in Sources */ = {isa = PBXBuildFile; fileRef = D21DB32F1F74A47B00A5E5B1 /* SocketData.m */; };
 		D21DB33E1F74E7B400A5E5B1 /* libicucore.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = D21DB33D1F74E7B400A5E5B1 /* libicucore.tbd */; };
+		D2943AB01F7B40AA005FDDE3 /* libmpv.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = D2943AAF1F7B40A3005FDDE3 /* libmpv.dylib */; };
 		D2B813351F724D1C00EF526D /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = D2B813341F724D1C00EF526D /* AppDelegate.m */; };
 		D2B813381F724D1C00EF526D /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = D2B813371F724D1C00EF526D /* main.m */; };
 		D2B8133B1F724D1C00EF526D /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D2B8133A1F724D1C00EF526D /* ViewController.m */; };
@@ -43,7 +44,6 @@
 		D2BD056D1F73CBB40066ABDD /* NSValue+iOS.m in Sources */ = {isa = PBXBuildFile; fileRef = D2BD05591F73C7F60066ABDD /* NSValue+iOS.m */; };
 		D2BD056E1F73CBB40066ABDD /* NSView+UIView.m in Sources */ = {isa = PBXBuildFile; fileRef = D2BD055B1F73C7F60066ABDD /* NSView+UIView.m */; };
 		D2C083851F756A8900CF286F /* PlayerWindow.m in Sources */ = {isa = PBXBuildFile; fileRef = D2C083841F756A8900CF286F /* PlayerWindow.m */; };
-		D2C0838A1F7588F100CF286F /* libmpv.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = D2BD057D1F73D9EC0066ABDD /* libmpv.dylib */; };
 		D2C083911F76584300CF286F /* MpvClientOGLView.m in Sources */ = {isa = PBXBuildFile; fileRef = D2C083901F76584300CF286F /* MpvClientOGLView.m */; };
 /* End PBXBuildFile section */
 
@@ -67,6 +67,7 @@
 		D21DB32E1F74A47B00A5E5B1 /* SocketData.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SocketData.h; sourceTree = "<group>"; };
 		D21DB32F1F74A47B00A5E5B1 /* SocketData.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SocketData.m; sourceTree = "<group>"; };
 		D21DB33D1F74E7B400A5E5B1 /* libicucore.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libicucore.tbd; path = usr/lib/libicucore.tbd; sourceTree = SDKROOT; };
+		D2943AAF1F7B40A3005FDDE3 /* libmpv.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libmpv.dylib; path = ../../../../usr/local/lib/libmpv.dylib; sourceTree = DEVELOPER_DIR; };
 		D2AA7FDB1F77020F00F36274 /* BarrageRenderer.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BarrageRenderer.h; sourceTree = "<group>"; };
 		D2B813301F724D1C00EF526D /* Douyu.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Douyu.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		D2B813331F724D1C00EF526D /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
@@ -117,11 +118,8 @@
 		D2BD05591F73C7F60066ABDD /* NSValue+iOS.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "NSValue+iOS.m"; sourceTree = "<group>"; };
 		D2BD055A1F73C7F60066ABDD /* NSView+UIView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "NSView+UIView.h"; sourceTree = "<group>"; };
 		D2BD055B1F73C7F60066ABDD /* NSView+UIView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "NSView+UIView.m"; sourceTree = "<group>"; };
-		D2BD057B1F73D9B50066ABDD /* libmpv.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libmpv.dylib; path = "../../代码/bilibili-mac-client/bilibili/libs/libmpv.dylib"; sourceTree = "<group>"; };
-		D2BD057D1F73D9EC0066ABDD /* libmpv.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libmpv.dylib; path = ../../../../../usr/local/lib/libmpv.dylib; sourceTree = "<group>"; };
 		D2C083831F756A8900CF286F /* PlayerWindow.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PlayerWindow.h; sourceTree = "<group>"; };
 		D2C083841F756A8900CF286F /* PlayerWindow.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = PlayerWindow.m; sourceTree = "<group>"; };
-		D2C083871F75882000CF286F /* libmpv.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libmpv.dylib; path = Douyu/Frameworks/libmpv.dylib; sourceTree = "<group>"; };
 		D2C0838F1F76584300CF286F /* MpvClientOGLView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MpvClientOGLView.h; sourceTree = "<group>"; };
 		D2C083901F76584300CF286F /* MpvClientOGLView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MpvClientOGLView.m; sourceTree = "<group>"; };
 		D2C083921F765BC400CF286F /* OpenGL.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenGL.framework; path = System/Library/Frameworks/OpenGL.framework; sourceTree = SDKROOT; };
@@ -133,7 +131,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				D21DB33E1F74E7B400A5E5B1 /* libicucore.tbd in Frameworks */,
-				D2C0838A1F7588F100CF286F /* libmpv.dylib in Frameworks */,
+				D2943AB01F7B40AA005FDDE3 /* libmpv.dylib in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -319,10 +317,8 @@
 			isa = PBXGroup;
 			children = (
 				D2C083921F765BC400CF286F /* OpenGL.framework */,
-				D2C083871F75882000CF286F /* libmpv.dylib */,
 				D21DB33D1F74E7B400A5E5B1 /* libicucore.tbd */,
-				D2BD057D1F73D9EC0066ABDD /* libmpv.dylib */,
-				D2BD057B1F73D9B50066ABDD /* libmpv.dylib */,
+				D2943AAF1F7B40A3005FDDE3 /* libmpv.dylib */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
