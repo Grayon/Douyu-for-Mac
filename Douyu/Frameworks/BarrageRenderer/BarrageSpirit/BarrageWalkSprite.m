@@ -169,7 +169,7 @@
         }
     }
     if (availableFrom > STRIP_NUM - overlandStripNum) { // 那就是没有找到喽
-        availableFrom = arc4random()%160;//AVAERAGE_STRATEGY?leastActiveSpriteStrip:leastActiveTimeStrip; // 使用最小个数 or 使用最短时间
+        availableFrom = arc4random()%(160-overlandStripNum);//AVAERAGE_STRATEGY?leastActiveSpriteStrip:leastActiveTimeStrip; // 使用最小个数 or 使用最短时间
     }
     
     CGPoint origin = CGPointZero;
