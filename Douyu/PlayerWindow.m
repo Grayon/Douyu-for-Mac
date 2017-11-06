@@ -53,6 +53,16 @@
             });
             break;
         }
+        case 17:{
+            dispatch_async(dispatch_get_main_queue(), ^{
+                if (self.level == NSFloatingWindowLevel) {
+                    [self setLevel:NSNormalWindowLevel];
+                } else {
+                    [self setLevel:NSFloatingWindowLevel];
+                }
+            });
+            break;
+        }
         default:{
             [self handleKeyboardEvnet:event keyDown:YES];
             break;
