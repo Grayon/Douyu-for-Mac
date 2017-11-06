@@ -16,6 +16,7 @@
 
 @property (strong) NSWindowController *playerWindowController;
 @property (weak) PlayerViewController *playerViewController;
+@property (strong) id <NSObject> playingActivity;
 
 @end
 
@@ -72,6 +73,7 @@
     PlayerViewController *playerViewController = (PlayerViewController *)playerWindowController.contentViewController;
     [playerViewController loadPlayerWithInfo:roomInfo];
     self.playerViewController = playerViewController;
+    self.playingActivity = [[NSProcessInfo processInfo] beginActivityWithOptions:NSActivityIdleDisplaySleepDisabled reason:@"playing video"];
     [self.view.window performClose:nil];
 }
 
@@ -106,6 +108,7 @@
 - (void)windowWillClose:(NSNotification *)notification{
     [self.playerViewController destroyPlayer];
     self.playerWindowController = nil;
+    [[NSProcessInfo processInfo] endActivity:self.playingActivity];
     [self reset];
     [self.view.window makeKeyAndOrderFront:nil];
 }
