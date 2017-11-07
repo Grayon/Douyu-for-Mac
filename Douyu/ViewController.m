@@ -27,6 +27,8 @@
 
     // Do any additional setup after loading the view.
     [self.view.window center];
+    NSInteger videoQuality = [[NSUserDefaults standardUserDefaults] integerForKey:@"videoQuality"];
+    [self.videoQualityButton selectItemAtIndex:videoQuality];
 }
 
 - (void)reset {
@@ -44,6 +46,7 @@
 
 - (IBAction)playAction:(NSButton *)sender {
     [self.roomTextField resignFirstResponder];
+    [[NSUserDefaults standardUserDefaults] setInteger:self.videoQualityButton.indexOfSelectedItem forKey:@"videoQuality"];
     NSString *room = [self.roomTextField.stringValue stringByReplacingOccurrencesOfString:@" " withString:@""];
     if (room.length == 0) {
         room = self.roomTextField.placeholderString;
@@ -63,7 +66,6 @@
         [self showError:@"主播不在线"];
         return;
     }
-    
     NSWindowController *playerWindowController = [[NSStoryboard storyboardWithName:@"Main" bundle:nil] instantiateControllerWithIdentifier:@"PlayerWindowController"];
     [playerWindowController.window center];
     [playerWindowController.window makeKeyAndOrderFront:nil];
