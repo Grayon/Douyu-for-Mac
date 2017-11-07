@@ -12,6 +12,7 @@
 
 @property (weak) IBOutlet NSTextField *roomTextField;
 @property (weak) IBOutlet NSButton *playButton;
+@property (weak) IBOutlet NSPopUpButton *videoQualityButton;
 
 - (void)reset;
 

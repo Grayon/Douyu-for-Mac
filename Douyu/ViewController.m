@@ -63,15 +63,14 @@
         [self showError:@"主播不在线"];
         return;
     }
-    self.playButton.enabled = NO;
-    self.roomTextField.enabled = NO;
+    
     NSWindowController *playerWindowController = [[NSStoryboard storyboardWithName:@"Main" bundle:nil] instantiateControllerWithIdentifier:@"PlayerWindowController"];
     [playerWindowController.window center];
     [playerWindowController.window makeKeyAndOrderFront:nil];
     [playerWindowController.window setDelegate:self];
     self.playerWindowController = playerWindowController;
     PlayerViewController *playerViewController = (PlayerViewController *)playerWindowController.contentViewController;
-    [playerViewController loadPlayerWithInfo:roomInfo];
+    [playerViewController loadPlayerWithInfo:roomInfo withVideoQuality:self.videoQualityButton.indexOfSelectedItem];
     self.playerViewController = playerViewController;
     self.playingActivity = [[NSProcessInfo processInfo] beginActivityWithOptions:NSActivityIdleDisplaySleepDisabled reason:@"playing video"];
     [self.view.window performClose:nil];
