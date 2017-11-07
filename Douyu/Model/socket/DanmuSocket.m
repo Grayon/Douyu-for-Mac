@@ -43,8 +43,8 @@ static DanmuSocket *instance = nil;
     self.socket = [[AsyncSocket alloc]initWithDelegate:self];
 
     NSError *error = nil;
-    NSString *ip = @"danmu.douyutv.com";
-    UInt16 port = 8602;
+    NSString *ip = @"openbarrage.douyutv.com";
+    UInt16 port = 8601;
     
     [self.socket connectToHost:ip onPort:port withTimeout:30 error:&error];
     

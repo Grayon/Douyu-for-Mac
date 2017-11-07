@@ -78,7 +78,7 @@ static void *get_proc_address(void *ctx, const char *name)
     return addr;
 }
 
-- (void)loadPlayerWithInfo:(DYRoomInfo *)info {
+- (void)loadPlayerWithInfo:(DYRoomInfo *)info withVideoQuality:(NSInteger)quality {
     self.queue = dispatch_queue_create("mpv.quene", DISPATCH_QUEUE_SERIAL);
     [self.loadingView setWantsLayer:YES];
     [self.loadingView.layer setBackgroundColor:ColorFromRGBHex(0xecebeb, 1).CGColor];
@@ -86,12 +86,27 @@ static void *get_proc_address(void *ctx, const char *name)
     [self setTitle:[NSString stringWithFormat:@"【%@（%@）】%@",self.roomInfo.nickName,self.roomInfo.roomId,self.roomInfo.roomName]];
     [self.view.window setTitle:self.title];
     dispatch_async(dispatch_get_main_queue(), ^{
-#if 0
-        if (self.roomInfo.lowVideoUrl.length > 0)
-            [self playVideo:self.roomInfo.lowVideoUrl];
-        else
-#endif
-        [self playVideo:self.roomInfo.videoUrl];
+        switch (quality) {
+            case 2:{
+                if (self.roomInfo.lowVideoUrl.length > 0) {
+                    [self playVideo:self.roomInfo.lowVideoUrl];
+                    break;
+                }
+            }
+            case 1:{
+                if (self.roomInfo.middleVideoUrl.length > 0) {
+                    [self playVideo:self.roomInfo.middleVideoUrl];
+                    break;
+                }
+            }
+            case 0:{
+                [self playVideo:self.roomInfo.videoUrl];
+                break;
+            }
+            default:
+                [self playVideo:self.roomInfo.videoUrl];
+                break;
+        }
         [self loadDanmu];
     });
 }
@@ -177,9 +192,10 @@ static void *get_proc_address(void *ctx, const char *name)
     if(self.title){
         [self setMPVOption:"force-media-title" :[self.title UTF8String]];
     }
+    [self setMPVOption:"hwdec" : "auto"];
     [self setMPVOption:"opengl-hwdec-interop" :"auto"];
-    [self setMPVOption: "vf" : "lavfi=\"fps=60:round=down\""];
-    
+//    [self setMPVOption: "vf" : "lavfi=\"fps=60:round=down\""];
+    [self loadMPVSettings];
     // request important errors
     check_error(mpv_request_log_messages(self.mpv, "warn"));
     
@@ -197,6 +213,20 @@ static void *get_proc_address(void *ctx, const char *name)
         const char *cmd[] = {"loadfile", [URL cStringUsingEncoding:NSUTF8StringEncoding], NULL};
         check_error(mpv_command(self.mpv, cmd));
     });
+}
+
+- (void) loadMPVSettings{
+    NSArray *paths = NSSearchPathForDirectoriesInDomains(NSApplicationSupportDirectory, NSUserDomainMask, YES);
+    NSString *applicationSupportDirectory = [paths firstObject];
+    NSString *confDir = [NSString stringWithFormat:@"%@/Douyu/conf/",applicationSupportDirectory];
+    
+    BOOL isDir = NO;
+    BOOL isExist = [[NSFileManager defaultManager] fileExistsAtPath:confDir isDirectory:&isDir];
+    if(!isExist){
+        [[NSFileManager defaultManager] createDirectoryAtPath:confDir withIntermediateDirectories:YES attributes:nil error:nil];
+    }
+    mpv_set_option_string(self.mpv, "config-dir",[confDir UTF8String]);
+    [self setMPVOption:"config" :"yes"];
 }
 
 - (void) readEvents

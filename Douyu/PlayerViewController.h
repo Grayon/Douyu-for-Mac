@@ -18,6 +18,6 @@
 @property (weak) IBOutlet MpvClientOGLView *glView;
 @property (strong) BarrageRenderer *barrageRenderer;
 
-- (void)loadPlayerWithInfo:(DYRoomInfo *)info;
+- (void)loadPlayerWithInfo:(DYRoomInfo *)info withVideoQuality:(NSInteger)quality;
 - (void)destroyPlayer;
 @end

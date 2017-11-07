@@ -16,6 +16,7 @@
 
 @property (strong) NSWindowController *playerWindowController;
 @property (weak) PlayerViewController *playerViewController;
+@property (strong) id <NSObject> playingActivity;
 
 @end
 
@@ -26,6 +27,8 @@
 
     // Do any additional setup after loading the view.
     [self.view.window center];
+    NSInteger videoQuality = [[NSUserDefaults standardUserDefaults] integerForKey:@"videoQuality"];
+    [self.videoQualityButton selectItemAtIndex:videoQuality];
 }
 
 - (void)reset {
@@ -43,6 +46,7 @@
 
 - (IBAction)playAction:(NSButton *)sender {
     [self.roomTextField resignFirstResponder];
+    [[NSUserDefaults standardUserDefaults] setInteger:self.videoQualityButton.indexOfSelectedItem forKey:@"videoQuality"];
     NSString *room = [self.roomTextField.stringValue stringByReplacingOccurrencesOfString:@" " withString:@""];
     if (room.length == 0) {
         room = self.roomTextField.placeholderString;
@@ -62,16 +66,15 @@
         [self showError:@"主播不在线"];
         return;
     }
-    self.playButton.enabled = NO;
-    self.roomTextField.enabled = NO;
     NSWindowController *playerWindowController = [[NSStoryboard storyboardWithName:@"Main" bundle:nil] instantiateControllerWithIdentifier:@"PlayerWindowController"];
     [playerWindowController.window center];
     [playerWindowController.window makeKeyAndOrderFront:nil];
     [playerWindowController.window setDelegate:self];
     self.playerWindowController = playerWindowController;
     PlayerViewController *playerViewController = (PlayerViewController *)playerWindowController.contentViewController;
-    [playerViewController loadPlayerWithInfo:roomInfo];
+    [playerViewController loadPlayerWithInfo:roomInfo withVideoQuality:self.videoQualityButton.indexOfSelectedItem];
     self.playerViewController = playerViewController;
+    self.playingActivity = [[NSProcessInfo processInfo] beginActivityWithOptions:NSActivityIdleDisplaySleepDisabled reason:@"playing video"];
     [self.view.window performClose:nil];
 }
 
@@ -106,6 +109,7 @@
 - (void)windowWillClose:(NSNotification *)notification{
     [self.playerViewController destroyPlayer];
     self.playerWindowController = nil;
+    [[NSProcessInfo processInfo] endActivity:self.playingActivity];
     [self reset];
     [self.view.window makeKeyAndOrderFront:nil];
 }
