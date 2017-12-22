@@ -23,6 +23,10 @@
     // Insert code here to tear down your application
 }
 
+- (void)application:(NSApplication *)application openURLs:(NSArray<NSURL *> *)urls {
+    [[NSNotificationCenter defaultCenter] postNotificationName:@"openUrl" object:urls];
+}
+
 - (BOOL)applicationShouldHandleReopen:(NSApplication *)theApplication
                     hasVisibleWindows:(BOOL)flag{
     if (!flag){
