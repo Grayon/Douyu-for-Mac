@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.Storyboard.XIB" version="3.0" toolsVersion="13529" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" initialViewController="B8D-0N-5wS">
+<document type="com.apple.InterfaceBuilder3.Cocoa.Storyboard.XIB" version="3.0" toolsVersion="13771" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" initialViewController="B8D-0N-5wS">
     <dependencies>
         <deployment identifier="macosx"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="13529"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="13771"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
@@ -665,12 +665,12 @@
             <objects>
                 <windowController id="B8D-0N-5wS" sceneMemberID="viewController">
                     <window key="window" title="斗鱼播放器" allowsToolTipsWhenApplicationIsInactive="NO" autorecalculatesKeyViewLoop="NO" oneShot="NO" releasedWhenClosed="NO" showsToolbarButton="NO" visibleAtLaunch="NO" animationBehavior="default" id="IQv-IB-iLA">
-                        <windowStyleMask key="styleMask" titled="YES" closable="YES" miniaturizable="YES"/>
+                        <windowStyleMask key="styleMask" titled="YES" closable="YES" miniaturizable="YES" resizable="YES"/>
                         <windowPositionMask key="initialPositionMask" leftStrut="YES" rightStrut="YES" topStrut="YES" bottomStrut="YES"/>
-                        <rect key="contentRect" x="196" y="240" width="280" height="80"/>
+                        <rect key="contentRect" x="196" y="240" width="320" height="85"/>
                         <rect key="screenRect" x="0.0" y="0.0" width="1680" height="1027"/>
-                        <value key="minSize" type="size" width="280" height="80"/>
-                        <value key="maxSize" type="size" width="280" height="80"/>
+                        <value key="minSize" type="size" width="320" height="85"/>
+                        <value key="maxSize" type="size" width="360" height="85"/>
                         <connections>
                             <outlet property="delegate" destination="B8D-0N-5wS" id="wA2-wx-Ner"/>
                         </connections>
@@ -681,18 +681,18 @@
                 </windowController>
                 <customObject id="Oky-zY-oP4" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="62" y="340"/>
+            <point key="canvasLocation" x="-33" y="325"/>
         </scene>
         <!--Window Controller-->
         <scene sceneID="qH7-aI-oOk">
             <objects>
                 <customObject id="B6E-pG-5mQ" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>
                 <windowController storyboardIdentifier="PlayerWindowController" id="RsE-Gh-Bc5" sceneMemberID="viewController">
-                    <window key="window" title="Douyu" allowsToolTipsWhenApplicationIsInactive="NO" autorecalculatesKeyViewLoop="NO" restorable="NO" oneShot="NO" showsToolbarButton="NO" visibleAtLaunch="NO" frameAutosaveName="" animationBehavior="default" id="MbN-wX-phc" customClass="PlayerWindow">
+                    <window key="window" title="Douyu" allowsToolTipsWhenApplicationIsInactive="NO" autorecalculatesKeyViewLoop="NO" oneShot="NO" showsToolbarButton="NO" visibleAtLaunch="NO" frameAutosaveName="" animationBehavior="default" id="MbN-wX-phc" customClass="PlayerWindow">
                         <windowStyleMask key="styleMask" titled="YES" closable="YES" miniaturizable="YES" resizable="YES"/>
                         <windowCollectionBehavior key="collectionBehavior" fullScreenPrimary="YES"/>
                         <windowPositionMask key="initialPositionMask" leftStrut="YES" rightStrut="YES" topStrut="YES" bottomStrut="YES"/>
-                        <rect key="contentRect" x="163" y="199" width="480" height="270"/>
+                        <rect key="contentRect" x="163" y="199" width="640" height="360"/>
                         <rect key="screenRect" x="0.0" y="0.0" width="1280" height="777"/>
                         <connections>
                             <outlet property="delegate" destination="RsE-Gh-Bc5" id="tPW-Cf-5ag"/>
@@ -703,18 +703,18 @@
                     </connections>
                 </windowController>
             </objects>
-            <point key="canvasLocation" x="502.5" y="264"/>
+            <point key="canvasLocation" x="615" y="240"/>
         </scene>
         <!--斗鱼播放器-->
         <scene sceneID="hIz-AP-VOD">
             <objects>
                 <viewController title="斗鱼播放器" id="XfG-lQ-9wD" customClass="ViewController" sceneMemberID="viewController">
                     <view key="view" wantsLayer="YES" id="m2S-Jp-Qdl">
-                        <rect key="frame" x="0.0" y="0.0" width="291" height="80"/>
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="85"/>
                         <autoresizingMask key="autoresizingMask"/>
                         <subviews>
                             <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="lXL-4n-R1i">
-                                <rect key="frame" x="210" y="34" width="67" height="32"/>
+                                <rect key="frame" x="239" y="39" width="67" height="32"/>
                                 <buttonCell key="cell" type="push" title="播放" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="wnh-hw-o8e">
                                     <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                                     <font key="font" metaFont="system"/>
@@ -723,16 +723,8 @@
                                     <action selector="playAction:" target="XfG-lQ-9wD" id="KIv-wp-Drh"/>
                                 </connections>
                             </button>
-                            <textField verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="ZYh-rh-8ZK">
-                                <rect key="frame" x="108" y="40" width="100" height="22"/>
-                                <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" state="on" borderStyle="bezel" placeholderString="156277" drawsBackground="YES" id="saQ-G2-wj4">
-                                    <font key="font" metaFont="system"/>
-                                    <color key="textColor" name="textColor" catalog="System" colorSpace="catalog"/>
-                                    <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
-                                </textFieldCell>
-                            </textField>
                             <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="Vvd-L9-WsZ">
-                                <rect key="frame" x="18" y="43" width="84" height="17"/>
+                                <rect key="frame" x="18" y="48" width="84" height="17"/>
                                 <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="房间号或别名" id="LvX-6k-F9q">
                                     <font key="font" metaFont="system"/>
                                     <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
@@ -740,7 +732,7 @@
                                 </textFieldCell>
                             </textField>
                             <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="fpl-2E-8F9">
-                                <rect key="frame" x="18" y="15" width="71" height="17"/>
+                                <rect key="frame" x="18" y="19" width="71" height="17"/>
                                 <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="优先清晰度" id="YcR-TY-nhU">
                                     <font key="font" size="13" name=".PingFangSC-Regular"/>
                                     <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
@@ -748,7 +740,7 @@
                                 </textFieldCell>
                             </textField>
                             <popUpButton verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="TIP-qR-RVJ">
-                                <rect key="frame" x="106" y="10" width="64" height="26"/>
+                                <rect key="frame" x="106" y="14" width="64" height="26"/>
                                 <popUpButtonCell key="cell" type="push" title="超清" bezelStyle="rounded" alignment="left" lineBreakMode="truncatingTail" state="on" borderStyle="borderAndBezel" imageScaling="proportionallyDown" inset="2" selectedItem="3yb-dC-RSZ" id="eoq-8t-pKV">
                                     <behavior key="behavior" lightByBackground="YES" lightByGray="YES"/>
                                     <font key="font" metaFont="menu"/>
@@ -761,56 +753,64 @@
                                     </menu>
                                 </popUpButtonCell>
                             </popUpButton>
+                            <comboBox verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="Khn-wP-dkR">
+                                <rect key="frame" x="108" y="42" width="132" height="26"/>
+                                <comboBoxCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" borderStyle="bezel" placeholderString="156277" drawsBackground="YES" usesDataSource="YES" numberOfVisibleItems="5" id="JIp-zE-9qx">
+                                    <font key="font" metaFont="system"/>
+                                    <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
+                                    <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                                </comboBoxCell>
+                            </comboBox>
                         </subviews>
                         <constraints>
-                            <constraint firstItem="ZYh-rh-8ZK" firstAttribute="leading" secondItem="Vvd-L9-WsZ" secondAttribute="trailing" constant="8" id="93K-CH-RAN"/>
                             <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="fpl-2E-8F9" secondAttribute="trailing" constant="20" symbolic="YES" id="9DE-hl-oyE"/>
-                            <constraint firstItem="TIP-qR-RVJ" firstAttribute="leading" secondItem="ZYh-rh-8ZK" secondAttribute="leading" id="9hd-eu-Ouo"/>
                             <constraint firstAttribute="trailing" secondItem="lXL-4n-R1i" secondAttribute="trailing" constant="20" id="9tk-fu-iDO"/>
                             <constraint firstItem="Vvd-L9-WsZ" firstAttribute="top" secondItem="m2S-Jp-Qdl" secondAttribute="top" constant="20" id="G5f-DD-iMb"/>
+                            <constraint firstItem="TIP-qR-RVJ" firstAttribute="top" secondItem="Khn-wP-dkR" secondAttribute="bottom" constant="8" id="LXy-zk-Zzp"/>
+                            <constraint firstItem="Khn-wP-dkR" firstAttribute="leading" secondItem="Vvd-L9-WsZ" secondAttribute="trailing" constant="8" id="LeS-x9-Mw7"/>
                             <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="TIP-qR-RVJ" secondAttribute="trailing" constant="20" symbolic="YES" id="QQy-gZ-W7l"/>
                             <constraint firstItem="Vvd-L9-WsZ" firstAttribute="leading" secondItem="m2S-Jp-Qdl" secondAttribute="leading" constant="20" id="RvD-Fm-cSF"/>
                             <constraint firstItem="fpl-2E-8F9" firstAttribute="leading" secondItem="Vvd-L9-WsZ" secondAttribute="leading" id="WGh-nV-0ne"/>
-                            <constraint firstItem="lXL-4n-R1i" firstAttribute="leading" secondItem="ZYh-rh-8ZK" secondAttribute="trailing" constant="8" id="ddb-nX-kBs"/>
+                            <constraint firstItem="Khn-wP-dkR" firstAttribute="centerY" secondItem="Vvd-L9-WsZ" secondAttribute="centerY" id="cqn-7j-O9Q"/>
                             <constraint firstItem="TIP-qR-RVJ" firstAttribute="centerY" secondItem="fpl-2E-8F9" secondAttribute="centerY" id="elN-Fk-ifG"/>
                             <constraint firstItem="lXL-4n-R1i" firstAttribute="centerY" secondItem="Vvd-L9-WsZ" secondAttribute="centerY" id="fRw-7N-mFF"/>
-                            <constraint firstItem="fpl-2E-8F9" firstAttribute="top" secondItem="ZYh-rh-8ZK" secondAttribute="bottom" constant="8" id="ku9-qp-bEQ"/>
-                            <constraint firstItem="ZYh-rh-8ZK" firstAttribute="centerY" secondItem="Vvd-L9-WsZ" secondAttribute="centerY" id="n8a-ri-v2i"/>
+                            <constraint firstItem="TIP-qR-RVJ" firstAttribute="leading" secondItem="Khn-wP-dkR" secondAttribute="leading" id="nPT-ZO-tea"/>
+                            <constraint firstItem="lXL-4n-R1i" firstAttribute="leading" secondItem="Khn-wP-dkR" secondAttribute="trailing" constant="8" id="oVV-N6-Y3V"/>
                         </constraints>
                     </view>
                     <connections>
                         <outlet property="playButton" destination="lXL-4n-R1i" id="Zch-84-em5"/>
-                        <outlet property="roomTextField" destination="ZYh-rh-8ZK" id="WVy-r4-j7C"/>
+                        <outlet property="roomComboBox" destination="Khn-wP-dkR" id="XNe-ju-2LF"/>
                         <outlet property="videoQualityButton" destination="TIP-qR-RVJ" id="g94-az-sBt"/>
                     </connections>
                 </viewController>
                 <customObject id="rPt-NT-nkU" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="62.5" y="585.5"/>
+            <point key="canvasLocation" x="-33" y="620"/>
         </scene>
         <!--Media Player View Controller-->
         <scene sceneID="dFk-Xy-i13">
             <objects>
                 <viewController title="Douyu" storyboardIdentifier="PlayerViewController" id="ezi-gJ-mJe" userLabel="Media Player View Controller" customClass="PlayerViewController" sceneMemberID="viewController">
                     <view key="view" id="qSY-1j-uaX">
-                        <rect key="frame" x="0.0" y="0.0" width="480" height="270"/>
+                        <rect key="frame" x="0.0" y="0.0" width="640" height="360"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <openGLView fixedFrame="YES" useAuxiliaryDepthBufferStencil="NO" allowOffline="YES" translatesAutoresizingMaskIntoConstraints="NO" id="E2V-Lq-gbe" customClass="MpvClientOGLView">
-                                <rect key="frame" x="0.0" y="0.0" width="480" height="270"/>
+                                <rect key="frame" x="0.0" y="0.0" width="640" height="360"/>
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                             </openGLView>
                             <customView canDrawConcurrently="YES" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="IKQ-Ha-tRd" userLabel="LoadingView">
-                                <rect key="frame" x="0.0" y="0.0" width="480" height="270"/>
+                                <rect key="frame" x="0.0" y="0.0" width="640" height="360"/>
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                 <subviews>
-                                    <imageView horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="q3m-h1-9jg">
-                                        <rect key="frame" x="166" y="95" width="148" height="100"/>
+                                    <imageView autoresizesSubviews="NO" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="q3m-h1-9jg">
+                                        <rect key="frame" x="166" y="95" width="308" height="100"/>
                                         <autoresizingMask key="autoresizingMask" widthSizable="YES"/>
-                                        <imageCell key="cell" refusesFirstResponder="YES" alignment="left" animates="YES" imageScaling="proportionallyDown" image="loading" id="FFN-0p-BjX"/>
+                                        <imageCell key="cell" refusesFirstResponder="YES" alignment="left" animates="YES" image="loading" id="FFN-0p-BjX"/>
                                     </imageView>
                                     <textField hidden="YES" horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="QcL-tW-ARB">
-                                        <rect key="frame" x="8" y="20" width="464" height="34"/>
+                                        <rect key="frame" x="8" y="20" width="624" height="34"/>
                                         <autoresizingMask key="autoresizingMask" widthSizable="YES"/>
                                         <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" alignment="center" title="提示：开始播放后按回车可以发送弹幕" id="IsK-78-Ofr">
                                             <font key="font" metaFont="system"/>
@@ -819,7 +819,7 @@
                                         </textFieldCell>
                                     </textField>
                                     <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="uMd-vh-3Ic">
-                                        <rect key="frame" x="146" y="70" width="189" height="17"/>
+                                        <rect key="frame" x="146" y="70" width="349" height="17"/>
                                         <autoresizingMask key="autoresizingMask" widthSizable="YES"/>
                                         <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" alignment="center" title="Loading" id="hYx-eZ-nnB">
                                             <font key="font" metaFont="system"/>
@@ -838,7 +838,7 @@
                 </viewController>
                 <customObject id="4JE-uo-EyL" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="502" y="702"/>
+            <point key="canvasLocation" x="564.5" y="726"/>
         </scene>
     </scenes>
     <resources>

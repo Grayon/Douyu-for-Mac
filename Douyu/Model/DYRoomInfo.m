@@ -47,7 +47,7 @@
     self.showStatus = YES;
     if ([roomDic[@"show_status"] intValue] != 1) {
         self.showStatus = NO;
-        return YES;
+//        return YES;
     }
     NSString *nickName = roomDic[@"nickname"];
     NSString *roomName = roomDic[@"room_name"];

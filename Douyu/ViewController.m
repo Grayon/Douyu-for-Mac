@@ -9,14 +9,16 @@
 #import "ViewController.h"
 #import "DYRoomInfo.h"
 #import "PlayerViewController.h"
+#import "DYRoomHistoryModel.h"
 
-@interface ViewController ()<NSWindowDelegate> {
+@interface ViewController ()<NSWindowDelegate,NSComboBoxDataSource,NSComboBoxDelegate> {
     NSTimer *resizingTimer;
 }
 
 @property (strong) NSWindowController *playerWindowController;
 @property (weak) PlayerViewController *playerViewController;
 @property (strong) id <NSObject> playingActivity;
+@property (strong) NSArray<DYRoomHistoryData *> *roomHistory;
 
 @end
 
@@ -29,28 +31,65 @@
     [self.view.window center];
     NSInteger videoQuality = [[NSUserDefaults standardUserDefaults] integerForKey:@"videoQuality"];
     [self.videoQualityButton selectItemAtIndex:videoQuality];
+    self.roomComboBox.dataSource = self;
+    self.roomComboBox.delegate = self;
+    [self reloadHistory];
+    if (self.roomHistory.count) {
+        [self.roomComboBox selectItemAtIndex:0];
+    }
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(openUrlNorification:) name:@"openUrl" object:nil];
+}
+
+- (void)openUrlNorification:(NSNotification *)notification {
+    NSArray<NSURL *> *urls = notification.object;
+    NSURL *url = urls.firstObject;
+    if ([url.host isEqualToString:@"room"]) {
+        if (url.lastPathComponent.length) {
+            [self.playerWindowController.window performClose:nil];
+            [self playWithRoomString:url.lastPathComponent];
+        }
+    }
+}
+
+- (void)viewWillAppear {
+    [self reloadHistory];
+}
+
+- (NSInteger)numberOfItemsInComboBox:(NSComboBox *)comboBox {
+    return self.roomHistory.count;
+}
+
+- (id)comboBox:(NSComboBox *)comboBox objectValueForItemAtIndex:(NSInteger)index{
+    DYRoomHistoryData *roomData = self.roomHistory[index];
+    return [NSString stringWithFormat:@"%@(%@)",roomData.nickname,roomData.roomId];
+}
+
+- (void)comboBoxSelectionDidChange:(NSNotification *)notification {
+    dispatch_async(dispatch_get_main_queue(), ^{
+        self.roomComboBox.stringValue = self.roomHistory[self.roomComboBox.indexOfSelectedItem].roomId;
+    });
+}
+
+- (void)reloadHistory {
+    self.roomHistory = [DYRoomHistoryModel getAll];
+    [self.roomComboBox reloadData];
 }
 
 - (void)reset {
-    self.playButton.enabled = YES;
-    self.roomTextField.enabled = YES;
+    
 }
-
-
-- (void)setRepresentedObject:(id)representedObject {
-    [super setRepresentedObject:representedObject];
-
-    // Update the view, if already loaded.
-}
-
 
 - (IBAction)playAction:(NSButton *)sender {
-    [self.roomTextField resignFirstResponder];
+    [self.roomComboBox resignFirstResponder];
     [[NSUserDefaults standardUserDefaults] setInteger:self.videoQualityButton.indexOfSelectedItem forKey:@"videoQuality"];
-    NSString *room = [self.roomTextField.stringValue stringByReplacingOccurrencesOfString:@" " withString:@""];
+    NSString *room = [self.roomComboBox.stringValue stringByReplacingOccurrencesOfString:@" " withString:@""];
     if (room.length == 0) {
-        room = self.roomTextField.placeholderString;
+        room = self.roomComboBox.placeholderString;
     }
+    [self playWithRoomString:room];
+}
+
+- (void)playWithRoomString:(NSString *)room {
     NSString *roomId = [DYRoomInfo getRoomIdWithString:room];
     if (!roomId.length) {
         [self showError:@"无法获取房间ID信息"];
@@ -61,7 +100,8 @@
         [self showError:@"无法获取房间信息"];
         return;
     }
-
+    [DYRoomHistoryModel saveRoomId:roomInfo.roomId withNickname:roomInfo.nickName];
+    [self reloadHistory];
     if (!roomInfo.showStatus) {
         [self showError:@"主播不在线"];
         return;
