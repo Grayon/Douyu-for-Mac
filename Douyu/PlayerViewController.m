@@ -297,19 +297,25 @@ static void *get_proc_address(void *ctx, const char *name)
 
 - (void) mpv_cleanup
 {
-    dispatch_async(dispatch_get_main_queue(), ^(void){
-        mpv_set_wakeup_callback(self.mpv, NULL,NULL);
-        mpv_opengl_cb_uninit_gl(self.glView.mpvGL);
-        mpv_detach_destroy(self.mpv);
-        self.glView.mpvGL = nil;
-        self.mpv = nil;
-        [self.glView clearGLContext];
-    });
+    mpv_set_wakeup_callback(self.mpv, NULL,NULL);
+    mpv_opengl_cb_uninit_gl(self.glView.mpvGL);
+    mpv_detach_destroy(self.mpv);
+    self.glView.mpvGL = nil;
+    self.mpv = nil;
+    [self.glView clearGLContext];
+    [self.glView removeFromSuperview];
+    self.glView = nil;
 }
 
 - (void)destroyPlayer{
+    [self.view setWantsLayer:NO];
+    [hideCursorTimer invalidate];
+    hideCursorTimer = nil;
     [self.danmuProvider disconnect];
     [self.barrageRenderer stop];
+    [self.barrageRenderer.view.layer removeAllAnimations];
+    [self.barrageRenderer.view removeFromSuperview];
+    self.barrageRenderer = nil;
     [self mpv_cleanup];
 }
 
