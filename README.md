@@ -8,6 +8,11 @@
 - 9 / 0 控制音量
 - v 键开启关闭弹幕
 - T 键开启关闭 stay-on-top
+
+### 油猴脚本
+[Mac斗鱼播放器油猴脚本](https://greasyfork.org/zh-CN/scripts/36608-mac斗鱼播放器)
+![](https://a.photo/images/2017/12/22/QQ20171222-1712022x.png)
+
 # Install
 ## 下载内置 library 版本
 [Douyu-with-library.zip](https://github.com/Grayon/Douyu-for-Mac/releases)
