@@ -34,12 +34,12 @@ brew install mpv
 
 微信
 
-![wechat](http://ww4.sinaimg.cn/large/0060lm7Tly1fmsuo9y6huj3029028t8j.jpg)
+![wechat](http://ww2.sinaimg.cn/large/0060lm7Tly1fmsuswk8iaj304h04fq2z.jpg)
 
 
 
 支付宝
 
-![alipay](http://ww1.sinaimg.cn/large/0060lm7Tly1fmsuo9wr48j302j02iglg.jpg)
+![alipay](http://ww1.sinaimg.cn/large/0060lm7Tly1fmsuswjai9j304h04gq2y.jpg)
 
 
