@@ -1,6 +1,8 @@
 # Douyu-for-Mac
 非官方Mac版斗鱼直播播放器，实时弹幕显示
+
 ![](http://ww2.sinaimg.cn/large/0060lm7Tly1fjsi5xj9czj30qo0g8dpt.jpg)
+
 # Useage
 ### mpv.conf
 - 自定义 mpv.conf 放入 `~/Library/Application Support/Douyu/conf/` 文件夹下
@@ -31,9 +33,13 @@ brew install mpv
 # 支持一下
 
 微信
-![](http://ww1.sinaimg.cn/large/0060lm7Tly1fmsttwyxkij30jv0jy417.jpg)
+
+![wechat](http://ww4.sinaimg.cn/large/0060lm7Tly1fmsuo9y6huj3029028t8j.jpg)
+
+
 
 支付宝
-![](http://ww4.sinaimg.cn/large/0060lm7Tly1fmsttwxkmcj30dm0dbmyy.jpg)
+
+![alipay](http://ww1.sinaimg.cn/large/0060lm7Tly1fmsuo9wr48j302j02iglg.jpg)
 
 
