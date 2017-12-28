@@ -252,9 +252,13 @@ static void *get_proc_address(void *ctx, const char *name)
     [self onMpvEvent:event];
     switch (event->event_id) {
         case MPV_EVENT_SHUTDOWN: {
-            dispatch_async(dispatch_get_main_queue(), ^(void){
+            if ([NSThread isMainThread]) {
                 [self.view.window performClose:self];
-            });
+            } else {
+                dispatch_sync(dispatch_get_main_queue(), ^{
+                    [self.view.window performClose:self];
+                });
+            }
             NSLog(@"Stopping player");
             break;
         }
@@ -279,10 +283,15 @@ static void *get_proc_address(void *ctx, const char *name)
         }
         case MPV_EVENT_IDLE:{
             if(endFile){
-                dispatch_async(dispatch_get_main_queue(), ^{
+                if ([NSThread isMainThread]) {
                     [self.loadingView setHidden:NO];
                     [self.view.window performClose:self];
-                });
+                } else {
+                    dispatch_sync(dispatch_get_main_queue(), ^{
+                        [self.loadingView setHidden:NO];
+                        [self.view.window performClose:self];
+                    });
+                }
             }
             break;
         }
