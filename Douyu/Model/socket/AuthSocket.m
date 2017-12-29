@@ -89,6 +89,7 @@ static AuthSocket *instance = nil;
 //断开链接
 - (void)onSocketDidDisconnect:(AsyncSocket *)sock{
     NSLog(@"---认证服务器断开---");
+    self.combieData = nil;
 }
 
 @end

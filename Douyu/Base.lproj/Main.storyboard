@@ -688,7 +688,7 @@
             <objects>
                 <customObject id="B6E-pG-5mQ" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>
                 <windowController storyboardIdentifier="PlayerWindowController" id="RsE-Gh-Bc5" sceneMemberID="viewController">
-                    <window key="window" title="Douyu" allowsToolTipsWhenApplicationIsInactive="NO" autorecalculatesKeyViewLoop="NO" oneShot="NO" showsToolbarButton="NO" visibleAtLaunch="NO" frameAutosaveName="" animationBehavior="default" id="MbN-wX-phc" customClass="PlayerWindow">
+                    <window key="window" title="Douyu" allowsToolTipsWhenApplicationIsInactive="NO" autorecalculatesKeyViewLoop="NO" restorable="NO" oneShot="NO" releasedWhenClosed="NO" showsToolbarButton="NO" visibleAtLaunch="NO" frameAutosaveName="" animationBehavior="default" id="MbN-wX-phc" customClass="PlayerWindow">
                         <windowStyleMask key="styleMask" titled="YES" closable="YES" miniaturizable="YES" resizable="YES"/>
                         <windowCollectionBehavior key="collectionBehavior" fullScreenPrimary="YES"/>
                         <windowPositionMask key="initialPositionMask" leftStrut="YES" rightStrut="YES" topStrut="YES" bottomStrut="YES"/>
@@ -838,7 +838,7 @@
                 </viewController>
                 <customObject id="4JE-uo-EyL" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="564.5" y="726"/>
+            <point key="canvasLocation" x="615" y="757"/>
         </scene>
     </scenes>
     <resources>

@@ -10,9 +10,9 @@
 
 @interface ViewController : NSViewController
 
-@property (weak) IBOutlet NSButton *playButton;
-@property (weak) IBOutlet NSPopUpButton *videoQualityButton;
-@property (weak) IBOutlet NSComboBox *roomComboBox;
+@property (weak, nonatomic) IBOutlet NSButton *playButton;
+@property (weak, nonatomic) IBOutlet NSPopUpButton *videoQualityButton;
+@property (weak, nonatomic) IBOutlet NSComboBox *roomComboBox;
 
 - (void)reset;
 

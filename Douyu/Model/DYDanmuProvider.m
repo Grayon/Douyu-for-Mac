@@ -25,7 +25,6 @@
     _authSocket = [AuthSocket sharedInstance];
     _authSocket.room = roomInfo.roomId;
     _authSocket.servers = roomInfo.servers;
-    [_authSocket connectSocketHost];
     _danmuSocket = [DanmuSocket sharedInstance];
     _danmuSocket.room = _authSocket.room;
     //weak处理防止block循环
@@ -35,8 +34,8 @@
         danmuSocket.groupID = groupID;
         [danmuSocket connectSocketHost];
     };
-    
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(receiveMessageNotification:) name:@"kReceiveDYMessageNotification" object:nil];
+    [_authSocket connectSocketHost];
 }
 
 - (void)receiveMessageNotification:(NSNotification *)notification {
@@ -78,6 +77,7 @@
 - (void)disconnect{
     [_authSocket cutOffSocket];
     [_danmuSocket cutOffSocket];
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
 

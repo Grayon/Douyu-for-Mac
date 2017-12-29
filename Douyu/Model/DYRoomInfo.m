@@ -29,13 +29,29 @@
 }
 
 - (BOOL)getInfoWithRoomId:(NSString *)roomId {
+    NSString *API_SECRET = @"zNzMV1y4EMxOHS6I5WKm";
     NSArray *cdns = @[@"ws", @"tct", @"ws2", @"dl"];
+    NSString *aid = @"wp";
     int ts = [NSDate date].timeIntervalSince1970;
-    NSString *suffix = [NSString stringWithFormat:@"room/%@?aid=androidhd1&cdn=%@&client_sys=android&time=%d",roomId,cdns[0],ts];
-    NSString *API_SECRET = @"Y237pxTx2In5ayGz";
+    NSString *suffix = [NSString stringWithFormat:@"room/%@?aid=%@&cdn=%@&client_sys=%@&time=%d",roomId,aid,cdns[0],aid,ts];
     NSString *sign = [[suffix stringByAppendingString:API_SECRET] getMd5_32Bit];
     NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"https://capi.douyucdn.cn/api/v1/%@&auth=%@",suffix,sign]];
-    NSData *roomData = [NSData dataWithContentsOfURL:url];
+    NSMutableURLRequest *request = [[NSMutableURLRequest alloc] initWithURL:url];
+    
+    [request setValue:@"Mozilla/5.0 (iPad; CPU OS 8_1_3 like Mac OS X) AppleWebKit/600.1.4 (KHTML, like Gecko) Version/8.0 Mobile/12B466 Safari/600.1.4" forHTTPHeaderField:@"User-Agent"];
+    
+    dispatch_semaphore_t semaphore = dispatch_semaphore_create(0);
+
+    __block NSData *roomData = nil;
+    NSURLSession *session = [NSURLSession sharedSession];
+    NSURLSessionDataTask *task = [session dataTaskWithRequest:request completionHandler:^(NSData * _Nullable data, NSURLResponse * _Nullable response, NSError * _Nullable error) {
+        roomData = data;
+        dispatch_semaphore_signal(semaphore);
+    }];
+    [task resume];
+
+    dispatch_semaphore_wait(semaphore,DISPATCH_TIME_FOREVER);
+    
     if (!roomData) {
         return NO;
     }

@@ -40,14 +40,13 @@ static DanmuSocket *instance = nil;
 }
 
 - (void)connectSocketHost{
-    self.socket = [[AsyncSocket alloc]initWithDelegate:self];
+    self.socket = [[AsyncSocket alloc] initWithDelegate:self];
 
     NSError *error = nil;
     NSString *ip = @"openbarrage.douyutv.com";
     UInt16 port = 8601;
     
     [self.socket connectToHost:ip onPort:port withTimeout:30 error:&error];
-    
 }
 
 //心跳包
@@ -86,7 +85,7 @@ static DanmuSocket *instance = nil;
 //断开链接
 - (void)onSocketDidDisconnect:(AsyncSocket *)sock{
     NSLog(@"----弹幕服务器断开----");
-
+    self.combieData = nil;
 }
 
 

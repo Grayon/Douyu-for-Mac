@@ -15,10 +15,10 @@
     NSTimer *resizingTimer;
 }
 
-@property (strong) NSWindowController *playerWindowController;
-@property (weak) PlayerViewController *playerViewController;
-@property (strong) id <NSObject> playingActivity;
-@property (strong) NSArray<DYRoomHistoryData *> *roomHistory;
+@property (strong, nonatomic) NSWindowController *playerWindowController;
+@property (weak, nonatomic) PlayerViewController *playerViewController;
+@property (strong, nonatomic) id <NSObject> playingActivity;
+@property (strong, nonatomic) NSArray<DYRoomHistoryData *> *roomHistory;
 
 @end
 
@@ -28,7 +28,6 @@
     [super viewDidLoad];
 
     // Do any additional setup after loading the view.
-    [self.view.window center];
     NSInteger videoQuality = [[NSUserDefaults standardUserDefaults] integerForKey:@"videoQuality"];
     [self.videoQualityButton selectItemAtIndex:videoQuality];
     self.roomComboBox.dataSource = self;
@@ -106,15 +105,11 @@
         [self showError:@"主播不在线"];
         return;
     }
-    NSWindowController *playerWindowController = [[NSStoryboard storyboardWithName:@"Main" bundle:nil] instantiateControllerWithIdentifier:@"PlayerWindowController"];
-    [playerWindowController.window center];
-    [playerWindowController.window makeKeyAndOrderFront:nil];
-    [playerWindowController.window setDelegate:self];
-    self.playerWindowController = playerWindowController;
-    PlayerViewController *playerViewController = (PlayerViewController *)playerWindowController.contentViewController;
+    PlayerViewController *playerViewController = (PlayerViewController *)self.playerWindowController.contentViewController;
     [playerViewController loadPlayerWithInfo:roomInfo withVideoQuality:self.videoQualityButton.indexOfSelectedItem];
     self.playerViewController = playerViewController;
     self.playingActivity = [[NSProcessInfo processInfo] beginActivityWithOptions:NSActivityIdleDisplaySleepDisabled reason:@"playing video"];
+    [self.playerWindowController.window makeKeyAndOrderFront:nil];
     [self.view.window performClose:nil];
 }
 
@@ -148,10 +143,20 @@
 
 - (void)windowWillClose:(NSNotification *)notification{
     [self.playerViewController destroyPlayer];
-    self.playerWindowController = nil;
     [[NSProcessInfo processInfo] endActivity:self.playingActivity];
     [self reset];
     [self.view.window makeKeyAndOrderFront:nil];
+}
+
+#pragma mark - lazy init
+
+- (NSWindowController *)playerWindowController {
+    if (!_playerWindowController) {
+        NSWindowController *playerWindowController = [[NSStoryboard storyboardWithName:@"Main" bundle:nil] instantiateControllerWithIdentifier:@"PlayerWindowController"];
+        [playerWindowController.window setDelegate:self];
+        _playerWindowController = playerWindowController;
+    }
+    return _playerWindowController;
 }
 
 @end

@@ -13,7 +13,7 @@
 
 
 #define RGB(r,g,b,a)    [NSColor colorWithRed:r/255.0 green:g/255.0 blue:b/255.0 alpha:a]
-#define ColorFromRGBHex(rgbValue,alphaValue)                                                                                                \
+#define ColorFromRGBHex(rgbValue,alphaValue)                                                                                                 \
 [NSColor colorWithRed:((float) ((rgbValue & 0xFF0000) >> 16)) / 255.0                                                        \
 green:((float) ((rgbValue & 0xFF00) >> 8)) / 255.0                                                           \
 blue:((float) (rgbValue & 0xFF)) / 255.0                                                                    \
@@ -24,10 +24,10 @@ alpha:alphaValue]
     NSTimer *hideCursorTimer;
 }
 
-@property (weak) IBOutlet NSView *loadingView;
-@property (strong) DYRoomInfo *roomInfo;
-@property (strong) DYDanmuProvider *danmuProvider;
-@property (strong) dispatch_queue_t queue;
+@property (weak, nonatomic) IBOutlet NSView *loadingView;
+@property (strong, nonatomic) DYRoomInfo *roomInfo;
+@property (strong, nonatomic) DYDanmuProvider *danmuProvider;
+@property (strong, nonatomic) dispatch_queue_t queue;
 @end
 
 @implementation PlayerViewController
@@ -79,7 +79,6 @@ static void *get_proc_address(void *ctx, const char *name)
 }
 
 - (void)loadPlayerWithInfo:(DYRoomInfo *)info withVideoQuality:(NSInteger)quality {
-    self.queue = dispatch_queue_create("mpv.quene", DISPATCH_QUEUE_SERIAL);
     [self.loadingView setWantsLayer:YES];
     [self.loadingView.layer setBackgroundColor:ColorFromRGBHex(0xecebeb, 1).CGColor];
     self.roomInfo = info;
@@ -131,18 +130,11 @@ static void *get_proc_address(void *ctx, const char *name)
 }
 
 - (void)loadDanmu {
-    dispatch_async(dispatch_get_main_queue(), ^{
-        BarrageRenderer *renderer = [[BarrageRenderer alloc] init];
-        [self.view setWantsLayer:YES];
-        [renderer.view setFrame:NSMakeRect(0,0,self.view.frame.size.width,self.view.frame.size.height)];
-        [renderer.view setAutoresizingMask:NSViewMaxYMargin|NSViewMinXMargin|NSViewWidthSizable|NSViewMaxXMargin|NSViewHeightSizable|NSViewMinYMargin];
-        [self.view addSubview:renderer.view positioned:NSWindowAbove relativeTo:nil];
-        [renderer start];
-        self.barrageRenderer = renderer;
-        self.danmuProvider = [[DYDanmuProvider alloc] init];
-        self.danmuProvider.delegate = self;
-        [self.danmuProvider loadWithInfo:self.roomInfo];
-    });
+    self.danmuProvider = [[DYDanmuProvider alloc] init];
+    self.danmuProvider.delegate = self;
+    [self.danmuProvider loadWithInfo:self.roomInfo];
+    [self.barrageRenderer start];
+    [self.view addSubview:self.barrageRenderer.view positioned:NSWindowAbove relativeTo:nil];
 }
 
 - (void)onNewMessage:(NSString *)cmContent :(NSString *)userName :(int)ftype :(int)fsize :(NSColor *)color{
@@ -252,9 +244,13 @@ static void *get_proc_address(void *ctx, const char *name)
     [self onMpvEvent:event];
     switch (event->event_id) {
         case MPV_EVENT_SHUTDOWN: {
-            dispatch_async(dispatch_get_main_queue(), ^(void){
+            if ([NSThread isMainThread]) {
                 [self.view.window performClose:self];
-            });
+            } else {
+                dispatch_sync(dispatch_get_main_queue(), ^{
+                    [self.view.window performClose:self];
+                });
+            }
             NSLog(@"Stopping player");
             break;
         }
@@ -279,10 +275,15 @@ static void *get_proc_address(void *ctx, const char *name)
         }
         case MPV_EVENT_IDLE:{
             if(endFile){
-                dispatch_async(dispatch_get_main_queue(), ^{
+                if ([NSThread isMainThread]) {
                     [self.loadingView setHidden:NO];
                     [self.view.window performClose:self];
-                });
+                } else {
+                    dispatch_sync(dispatch_get_main_queue(), ^{
+                        [self.loadingView setHidden:NO];
+                        [self.view.window performClose:self];
+                    });
+                }
             }
             break;
         }
@@ -297,19 +298,20 @@ static void *get_proc_address(void *ctx, const char *name)
 
 - (void) mpv_cleanup
 {
-    dispatch_async(dispatch_get_main_queue(), ^(void){
-        mpv_set_wakeup_callback(self.mpv, NULL,NULL);
-        mpv_opengl_cb_uninit_gl(self.glView.mpvGL);
-        mpv_detach_destroy(self.mpv);
-        self.glView.mpvGL = nil;
-        self.mpv = nil;
-        [self.glView clearGLContext];
-    });
+    mpv_set_wakeup_callback(self.mpv, NULL,NULL);
+    mpv_opengl_cb_uninit_gl(self.glView.mpvGL);
+    self.glView.mpvGL = nil;
+    mpv_detach_destroy(self.mpv);
+    self.mpv = nil;
 }
 
 - (void)destroyPlayer{
+    [self.view setWantsLayer:NO];
+    [hideCursorTimer invalidate];
+    hideCursorTimer = nil;
     [self.danmuProvider disconnect];
     [self.barrageRenderer stop];
+    [self.barrageRenderer.view removeFromSuperview];
     [self mpv_cleanup];
 }
 
@@ -339,6 +341,26 @@ static void *get_proc_address(void *ctx, const char *name)
     });
 }
 
+#pragma mark - lazy init
+
+- (BarrageRenderer *)barrageRenderer {
+    if (!_barrageRenderer) {
+        BarrageRenderer *renderer = [[BarrageRenderer alloc] init];
+        [self.view setWantsLayer:YES];
+        [renderer.view setFrame:NSMakeRect(0,0,self.view.frame.size.width,self.view.frame.size.height)];
+        [renderer.view setAutoresizingMask:NSViewMaxYMargin|NSViewMinXMargin|NSViewWidthSizable|NSViewMaxXMargin|NSViewHeightSizable|NSViewMinYMargin];
+        [renderer.view setWantsLayer:YES];
+        _barrageRenderer = renderer;
+    }
+    return _barrageRenderer;
+}
+
+- (dispatch_queue_t)queue {
+    if (!_queue) {
+        _queue = dispatch_queue_create("mpv.quene", DISPATCH_QUEUE_SERIAL);
+    }
+    return _queue;
+}
 
 
 @end
