@@ -51,7 +51,7 @@
     [task resume];
 
     dispatch_semaphore_wait(semaphore,DISPATCH_TIME_FOREVER);
-    
+    dispatch_semaphore_signal(semaphore);
     if (!roomData) {
         return NO;
     }

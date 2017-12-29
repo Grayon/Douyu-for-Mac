@@ -300,9 +300,12 @@ static void *get_proc_address(void *ctx, const char *name)
 {
     mpv_set_wakeup_callback(self.mpv, NULL,NULL);
     mpv_opengl_cb_uninit_gl(self.glView.mpvGL);
+    mpv_terminate_destroy(self.mpv);
     self.glView.mpvGL = nil;
-    mpv_detach_destroy(self.mpv);
     self.mpv = nil;
+    [self.glView clearGLContext];
+    [self.glView removeFromSuperview];
+    self.glView = nil;
 }
 
 - (void)destroyPlayer{
