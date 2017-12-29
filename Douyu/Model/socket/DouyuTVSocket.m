@@ -19,7 +19,7 @@
 
 //连接服务器
 - (void)connectSocketHost{
-    self.socket = [[AsyncSocket alloc]initWithDelegate:self];
+    self.socket = [[AsyncSocket alloc] initWithDelegate:self];
     [self setServerConfig];
     NSError *error = nil;
     ServerModel *sevCfg = self.server[0];
@@ -34,7 +34,6 @@
     [self.socket writeData:logoutData withTimeout:30 tag:1];
     [self.connectTimer invalidate];
     [self.socket disconnectAfterWriting];
-    
 }
 //心跳包
 - (void)longConnectToSocket{
