@@ -50,6 +50,8 @@
                 } else {
                     [vc.barrageRenderer start];
                 }
+                const char *args[] = {"show-text", vc.barrageRenderer.launched?"已开启弹幕":"已关闭弹幕" ,NULL};
+                mpv_command_async(vc.mpv,0, args);
             });
             break;
         }

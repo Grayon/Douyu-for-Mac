@@ -105,11 +105,15 @@
         [self showError:@"主播不在线"];
         return;
     }
-    PlayerViewController *playerViewController = (PlayerViewController *)self.playerWindowController.contentViewController;
+    NSWindowController *playerWindowController = [[NSStoryboard storyboardWithName:@"Main" bundle:nil] instantiateControllerWithIdentifier:@"PlayerWindowController"];
+    [playerWindowController.window center];
+    [playerWindowController.window makeKeyAndOrderFront:nil];
+    [playerWindowController.window setDelegate:self];
+    self.playerWindowController = playerWindowController;
+    PlayerViewController *playerViewController = (PlayerViewController *)playerWindowController.contentViewController;
     [playerViewController loadPlayerWithInfo:roomInfo withVideoQuality:self.videoQualityButton.indexOfSelectedItem];
     self.playerViewController = playerViewController;
     self.playingActivity = [[NSProcessInfo processInfo] beginActivityWithOptions:NSActivityIdleDisplaySleepDisabled reason:@"playing video"];
-    [self.playerWindowController.window makeKeyAndOrderFront:nil];
     [self.view.window performClose:nil];
 }
 
@@ -143,20 +147,10 @@
 
 - (void)windowWillClose:(NSNotification *)notification{
     [self.playerViewController destroyPlayer];
+    self.playerWindowController = nil;
     [[NSProcessInfo processInfo] endActivity:self.playingActivity];
     [self reset];
     [self.view.window makeKeyAndOrderFront:nil];
-}
-
-#pragma mark - lazy init
-
-- (NSWindowController *)playerWindowController {
-    if (!_playerWindowController) {
-        NSWindowController *playerWindowController = [[NSStoryboard storyboardWithName:@"Main" bundle:nil] instantiateControllerWithIdentifier:@"PlayerWindowController"];
-        [playerWindowController.window setDelegate:self];
-        _playerWindowController = playerWindowController;
-    }
-    return _playerWindowController;
 }
 
 @end
