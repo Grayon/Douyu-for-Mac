@@ -19,6 +19,24 @@ green:((float) ((rgbValue & 0xFF00) >> 8)) / 255.0                              
 blue:((float) (rgbValue & 0xFF)) / 255.0                                                                    \
 alpha:alphaValue]
 
+static void *get_proc_address(void *ctx, const char *name)
+{
+    CFStringRef symbolName = CFStringCreateWithCString(kCFAllocatorDefault, name, kCFStringEncodingASCII);
+    void *addr = CFBundleGetFunctionPointerForName(CFBundleGetBundleWithIdentifier(CFSTR("com.apple.opengl")), symbolName);
+    CFRelease(symbolName);
+    return addr;
+}
+
+static void glupdate(void *ctx)
+{
+    MpvClientOGLView *glView = (__bridge MpvClientOGLView *)ctx;
+    // I'm still not sure what the best way to handle this is, but this
+    // works.
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [glView drawRect];
+    });
+}
+
 @interface PlayerViewController ()<DYDanmuProviderDelegate> {
     BOOL endFile;
     NSTimer *hideCursorTimer;
@@ -58,24 +76,6 @@ void check_error(int status)
             [alert runModal];
         });
     }
-}
-
-static void glupdate(void *ctx)
-{
-    MpvClientOGLView *glView = (__bridge MpvClientOGLView *)ctx;
-    // I'm still not sure what the best way to handle this is, but this
-    // works.
-    dispatch_async(dispatch_get_main_queue(), ^{
-        [glView drawRect];
-    });
-}
-
-static void *get_proc_address(void *ctx, const char *name)
-{
-    CFStringRef symbolName = CFStringCreateWithCString(kCFAllocatorDefault, name, kCFStringEncodingASCII);
-    void *addr = CFBundleGetFunctionPointerForName(CFBundleGetBundleWithIdentifier(CFSTR("com.apple.opengl")), symbolName);
-    CFRelease(symbolName);
-    return addr;
 }
 
 - (void)loadPlayerWithInfo:(DYRoomInfo *)info withVideoQuality:(NSInteger)quality {
@@ -174,10 +174,9 @@ static void *get_proc_address(void *ctx, const char *name)
 - (void)playVideo:(NSString *)URL{
     
     // Start Playing Video
-    self.mpv  = mpv_create();
+    self.mpv = mpv_create();
     
     [self setMPVOption:"input-default-bindings" :"yes"];
-    [self setMPVOption:"vo" :"opengl-cb"];
 
     [self setMPVOption:"cache-default" :"75000"];
     
@@ -187,16 +186,25 @@ static void *get_proc_address(void *ctx, const char *name)
     [self setMPVOption:"hwdec" : "auto"];
     [self setMPVOption:"opengl-hwdec-interop" :"auto"];
 //    [self setMPVOption: "vf" : "lavfi=\"fps=60:round=down\""];
+    [self setMPVOption:"vo" :"libmpv"];
     [self loadMPVSettings];
     // request important errors
     check_error(mpv_request_log_messages(self.mpv, "warn"));
     
     check_error(mpv_initialize(self.mpv));
-    mpv_opengl_cb_context *mpvGL = mpv_get_sub_api(self.mpv, MPV_SUB_API_OPENGL_CB);
-    self.glView.mpvGL = mpvGL;
-    mpv_opengl_cb_init_gl(mpvGL, NULL, get_proc_address, NULL);
-    mpv_opengl_cb_set_update_callback(mpvGL, glupdate, (__bridge void *)self.glView);
-    
+    mpv_render_param mpv_params[] = {
+        {MPV_RENDER_PARAM_API_TYPE, MPV_RENDER_API_TYPE_OPENGL},
+        {MPV_RENDER_PARAM_OPENGL_INIT_PARAMS, &(mpv_opengl_init_params){
+            .get_proc_address = get_proc_address,
+        }},
+        {0}
+    };
+
+    mpv_render_context *mpvGLContext;
+    check_error(mpv_render_context_create(&mpvGLContext, self.mpv, mpv_params));
+    self.glView.mpvGL = mpvGLContext;
+    mpv_render_context_set_update_callback(mpvGLContext, glupdate, (__bridge void *)self.glView);
+
     dispatch_async(self.queue, ^{
         // Register to be woken up whenever mpv generates new events.
         mpv_set_wakeup_callback(self.mpv, wakeup, (__bridge void *) self);
@@ -299,7 +307,7 @@ static void *get_proc_address(void *ctx, const char *name)
 - (void) mpv_cleanup
 {
     mpv_set_wakeup_callback(self.mpv, NULL,NULL);
-    mpv_opengl_cb_uninit_gl(self.glView.mpvGL);
+    mpv_render_context_free(self.glView.mpvGL);
     mpv_terminate_destroy(self.mpv);
     self.glView.mpvGL = nil;
     self.mpv = nil;
@@ -360,7 +368,7 @@ static void *get_proc_address(void *ctx, const char *name)
 
 - (dispatch_queue_t)queue {
     if (!_queue) {
-        _queue = dispatch_queue_create("mpv.quene", DISPATCH_QUEUE_SERIAL);
+        _queue = dispatch_queue_create("douyu.mpv.quene", DISPATCH_QUEUE_SERIAL);
     }
     return _queue;
 }

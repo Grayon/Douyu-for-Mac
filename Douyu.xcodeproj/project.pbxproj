@@ -8,6 +8,9 @@
 
 /* Begin PBXBuildFile section */
 		A845774C02B76C57257ECAEA /* libPods-Douyu.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 93F4F262717B4A242D283804 /* libPods-Douyu.a */; };
+		B05DB3722170862400B640AB /* OpenGL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D2C083921F765BC400CF286F /* OpenGL.framework */; };
+		B0735FC0216DD3A90087F28E /* libmpv.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = B0735FBF216DD3A90087F28E /* libmpv.dylib */; };
+		B0735FC1216DD3E00087F28E /* libicucore.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = D21DB33D1F74E7B400A5E5B1 /* libicucore.tbd */; };
 		D213B2761FECAA17009F5123 /* DYRoomHistoryData.m in Sources */ = {isa = PBXBuildFile; fileRef = D213B2751FECAA17009F5123 /* DYRoomHistoryData.m */; };
 		D213B2791FECB9A8009F5123 /* DYRoomHistoryModel.m in Sources */ = {isa = PBXBuildFile; fileRef = D213B2781FECB9A8009F5123 /* DYRoomHistoryModel.m */; };
 		D21DB3301F74E53D00A5E5B1 /* DYDanmuProvider.m in Sources */ = {isa = PBXBuildFile; fileRef = D21DB31D1F74A46300A5E5B1 /* DYDanmuProvider.m */; };
@@ -19,8 +22,6 @@
 		D21DB3361F74E6EB00A5E5B1 /* RegexKitLite.m in Sources */ = {isa = PBXBuildFile; fileRef = D21DB32B1F74A47B00A5E5B1 /* RegexKitLite.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		D21DB3371F74E6EB00A5E5B1 /* ServerModel.m in Sources */ = {isa = PBXBuildFile; fileRef = D21DB32D1F74A47B00A5E5B1 /* ServerModel.m */; };
 		D21DB3381F74E6EB00A5E5B1 /* SocketData.m in Sources */ = {isa = PBXBuildFile; fileRef = D21DB32F1F74A47B00A5E5B1 /* SocketData.m */; };
-		D21DB33E1F74E7B400A5E5B1 /* libicucore.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = D21DB33D1F74E7B400A5E5B1 /* libicucore.tbd */; };
-		D2943AB01F7B40AA005FDDE3 /* libmpv.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = D2943AAF1F7B40A3005FDDE3 /* libmpv.dylib */; };
 		D2B813351F724D1C00EF526D /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = D2B813341F724D1C00EF526D /* AppDelegate.m */; };
 		D2B813381F724D1C00EF526D /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = D2B813371F724D1C00EF526D /* main.m */; };
 		D2B8133B1F724D1C00EF526D /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D2B8133A1F724D1C00EF526D /* ViewController.m */; };
@@ -54,6 +55,7 @@
 		133E00145D6C7423C81F9282 /* Pods-Douyu.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Douyu.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Douyu/Pods-Douyu.debug.xcconfig"; sourceTree = "<group>"; };
 		51D249B87DE465548D9F4F6F /* Pods-Douyu.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Douyu.release.xcconfig"; path = "Pods/Target Support Files/Pods-Douyu/Pods-Douyu.release.xcconfig"; sourceTree = "<group>"; };
 		93F4F262717B4A242D283804 /* libPods-Douyu.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Douyu.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		B0735FBF216DD3A90087F28E /* libmpv.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libmpv.dylib; path = ../../../../usr/local/lib/libmpv.dylib; sourceTree = DEVELOPER_DIR; };
 		D213B2741FECAA17009F5123 /* DYRoomHistoryData.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DYRoomHistoryData.h; sourceTree = "<group>"; };
 		D213B2751FECAA17009F5123 /* DYRoomHistoryData.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DYRoomHistoryData.m; sourceTree = "<group>"; };
 		D213B2771FECB9A8009F5123 /* DYRoomHistoryModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DYRoomHistoryModel.h; sourceTree = "<group>"; };
@@ -77,7 +79,6 @@
 		D21DB32E1F74A47B00A5E5B1 /* SocketData.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SocketData.h; sourceTree = "<group>"; };
 		D21DB32F1F74A47B00A5E5B1 /* SocketData.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SocketData.m; sourceTree = "<group>"; };
 		D21DB33D1F74E7B400A5E5B1 /* libicucore.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libicucore.tbd; path = usr/lib/libicucore.tbd; sourceTree = SDKROOT; };
-		D2943AAF1F7B40A3005FDDE3 /* libmpv.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libmpv.dylib; path = ../../../../usr/local/lib/libmpv.dylib; sourceTree = DEVELOPER_DIR; };
 		D2AA7FDB1F77020F00F36274 /* BarrageRenderer.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BarrageRenderer.h; sourceTree = "<group>"; };
 		D2B813301F724D1C00EF526D /* Douyu.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Douyu.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		D2B813331F724D1C00EF526D /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
@@ -140,8 +141,9 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				D21DB33E1F74E7B400A5E5B1 /* libicucore.tbd in Frameworks */,
-				D2943AB01F7B40AA005FDDE3 /* libmpv.dylib in Frameworks */,
+				B05DB3722170862400B640AB /* OpenGL.framework in Frameworks */,
+				B0735FC0216DD3A90087F28E /* libmpv.dylib in Frameworks */,
+				B0735FC1216DD3E00087F28E /* libicucore.tbd in Frameworks */,
 				A845774C02B76C57257ECAEA /* libPods-Douyu.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -341,9 +343,9 @@
 		D2BD057A1F73D9B50066ABDD /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				B0735FBF216DD3A90087F28E /* libmpv.dylib */,
 				D2C083921F765BC400CF286F /* OpenGL.framework */,
 				D21DB33D1F74E7B400A5E5B1 /* libicucore.tbd */,
-				D2943AAF1F7B40A3005FDDE3 /* libmpv.dylib */,
 				93F4F262717B4A242D283804 /* libPods-Douyu.a */,
 			);
 			name = Frameworks;
@@ -360,8 +362,6 @@
 				D2B8132C1F724D1C00EF526D /* Sources */,
 				D2B8132D1F724D1C00EF526D /* Frameworks */,
 				D2B8132E1F724D1C00EF526D /* Resources */,
-				884F308EB2FC580533C57772 /* [CP] Embed Pods Frameworks */,
-				FC262F1E76A76F5561BCB84A /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -379,13 +379,18 @@
 			isa = PBXProject;
 			attributes = {
 				CLASSPREFIX = DY;
-				LastUpgradeCheck = 0900;
+				LastUpgradeCheck = 1000;
 				ORGANIZATIONNAME = Lanskaya;
 				TargetAttributes = {
 					D2B8132F1F724D1C00EF526D = {
 						CreatedOnToolsVersion = 8.3.3;
 						DevelopmentTeam = UP2GKJVH3B;
 						ProvisioningStyle = Automatic;
+						SystemCapabilities = {
+							com.apple.Sandbox = {
+								enabled = 0;
+							};
+						};
 					};
 				};
 			};
@@ -437,36 +442,6 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
-			showEnvVarsInLog = 0;
-		};
-		884F308EB2FC580533C57772 /* [CP] Embed Pods Frameworks */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-			);
-			name = "[CP] Embed Pods Frameworks";
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-Douyu/Pods-Douyu-frameworks.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
-		FC262F1E76A76F5561BCB84A /* [CP] Copy Pods Resources */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-			);
-			name = "[CP] Copy Pods Resources";
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-Douyu/Pods-Douyu-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 /* End PBXShellScriptBuildPhase section */
@@ -542,6 +517,7 @@
 				CLANG_WARN_BOOL_CONVERSION = YES;
 				CLANG_WARN_COMMA = YES;
 				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
 				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
 				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
 				CLANG_WARN_EMPTY_BODY = YES;
@@ -549,6 +525,7 @@
 				CLANG_WARN_INFINITE_RECURSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
 				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
 				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
 				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
@@ -596,6 +573,7 @@
 				CLANG_WARN_BOOL_CONVERSION = YES;
 				CLANG_WARN_COMMA = YES;
 				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
 				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
 				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
 				CLANG_WARN_EMPTY_BODY = YES;
@@ -603,6 +581,7 @@
 				CLANG_WARN_INFINITE_RECURSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
 				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
 				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
 				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
@@ -639,6 +618,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
 				DEVELOPMENT_TEAM = UP2GKJVH3B;
+				GCC_C_LANGUAGE_STANDARD = "compiler-default";
 				HEADER_SEARCH_PATHS = /usr/local/include;
 				INFOPLIST_FILE = Douyu/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
@@ -662,6 +642,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
 				DEVELOPMENT_TEAM = UP2GKJVH3B;
+				GCC_C_LANGUAGE_STANDARD = "compiler-default";
 				HEADER_SEARCH_PATHS = /usr/local/include;
 				INFOPLIST_FILE = Douyu/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
