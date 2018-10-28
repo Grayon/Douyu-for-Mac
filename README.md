@@ -17,19 +17,9 @@
 ![](http://ww2.sinaimg.cn/large/0060lm7Tly1fmsubfqgvtj30mv07kgmz.jpg)
 
 # Install
-## 下载内置 library 版本
-[Douyu-with-library.zip](https://github.com/Grayon/Douyu-for-Mac/releases)
-## 或自行安装 mpv
-### 1.安装 homebrew 
-```bash
-/usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"; 
-```
-### 2.安装 mpv 
-```bash
-brew install mpv
-```
-### 3.下载最新 releases 包
+## 下载最新 releases 包
 [Douyu.zip](https://github.com/Grayon/Douyu-for-Mac/releases)
+
 # 支持一下
 
 微信
