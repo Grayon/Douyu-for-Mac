@@ -20,6 +20,7 @@
     if (self = [super initWithCoder:decoder]) {
         [self setWantsBestResolutionOpenGLSurface:YES];
         rect = [self convertRectToBacking:[self bounds]];
+        [self.openGLContext makeCurrentContext];
     }
     return self;
 }

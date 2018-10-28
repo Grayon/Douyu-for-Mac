@@ -66,8 +66,7 @@ void wakeup(void *context) {
     }
 }
 
-void check_error(int status)
-{
+void check_error(int status) {
     if (status < 0) {
         NSLog(@"mpv API error: %s", mpv_error_string(status));
         dispatch_async(dispatch_get_main_queue(), ^(void){
@@ -158,7 +157,7 @@ void check_error(int status)
         descriptor.params[@"backgroundColor"] = ColorFromRGBHex(0x2894FF,0.5);
         descriptor.params[@"cornerRadius"] = @(16);
     }
-    
+
     // type is not supported right
     descriptor.params[@"direction"] = @(BarrageWalkDirectionR2L);
     dispatch_async(dispatch_get_main_queue(), ^(void){
@@ -172,14 +171,14 @@ void check_error(int status)
 }
 
 - (void)playVideo:(NSString *)URL{
-    
+
     // Start Playing Video
     self.mpv = mpv_create();
-    
+
     [self setMPVOption:"input-default-bindings" :"yes"];
 
     [self setMPVOption:"cache-default" :"75000"];
-    
+
     if(self.title){
         [self setMPVOption:"force-media-title" :[self.title UTF8String]];
     }
@@ -208,7 +207,7 @@ void check_error(int status)
     dispatch_async(self.queue, ^{
         // Register to be woken up whenever mpv generates new events.
         mpv_set_wakeup_callback(self.mpv, wakeup, (__bridge void *) self);
-        
+
         // Load the indicated file
         const char *cmd[] = {"loadfile", [URL cStringUsingEncoding:NSUTF8StringEncoding], NULL};
         check_error(mpv_command(self.mpv, cmd));
@@ -219,7 +218,7 @@ void check_error(int status)
     NSArray *paths = NSSearchPathForDirectoriesInDomains(NSApplicationSupportDirectory, NSUserDomainMask, YES);
     NSString *applicationSupportDirectory = [paths firstObject];
     NSString *confDir = [NSString stringWithFormat:@"%@/Douyu/conf/",applicationSupportDirectory];
-    
+
     BOOL isDir = NO;
     BOOL isExist = [[NSFileManager defaultManager] fileExistsAtPath:confDir isDirectory:&isDir];
     if(!isExist){
