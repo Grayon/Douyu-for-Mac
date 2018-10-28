@@ -14,7 +14,7 @@
 
 @interface PlayerViewController : NSViewController
 
-@property (assign, nonatomic) mpv_handle *mpv;
+@property mpv_handle *mpv;
 @property (weak, nonatomic) IBOutlet MpvClientOGLView *glView;
 @property (strong, nonatomic) BarrageRenderer *barrageRenderer;
 

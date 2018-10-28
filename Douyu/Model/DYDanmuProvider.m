@@ -68,7 +68,7 @@
 //            NSLog(@"chatmsg=%@",model.dataString);
             [self.delegate onNewMessage:model.unColoredMsg :model.nickname :model.nc :24 :model.color];
         }
-        
+
         
     }
     

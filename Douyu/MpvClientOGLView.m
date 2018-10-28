@@ -20,6 +20,7 @@
     if (self = [super initWithCoder:decoder]) {
         [self setWantsBestResolutionOpenGLSurface:YES];
         rect = [self convertRectToBacking:[self bounds]];
+        [self.openGLContext makeCurrentContext];
     }
     return self;
 }
@@ -33,7 +34,21 @@
 - (void)drawRect
 {
     if (self.mpvGL && !self.pause) {
-        mpv_opengl_cb_draw(self.mpvGL, 0, rect.size.width, -rect.size.height);
+        mpv_render_param params[] = {
+            // Specify the default framebuffer (0) as target. This will
+            // render onto the entire screen. If you want to show the video
+            // in a smaller rectangle or apply fancy transformations, you'll
+            // need to render into a separate FBO and draw it manually.
+            {MPV_RENDER_PARAM_OPENGL_FBO, &(mpv_opengl_fbo){
+                .fbo = 0,
+                .w = rect.size.width,
+                .h = rect.size.height,
+            }},
+            // Flip rendering (needed due to flipped GL coordinate system).
+            {MPV_RENDER_PARAM_FLIP_Y, &(int){1}},
+            {0}
+        };
+        mpv_render_context_render(self.mpvGL, params);
     }
     else{
         rect = [self convertRectToBacking:[self bounds]];
