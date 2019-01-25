@@ -15,7 +15,23 @@
     NSString *roomId = string;
     if (![roomId isPureInt]) {
         NSString *roomInfoUrl = [@"http://open.douyucdn.cn/api/RoomApi/room/" stringByAppendingString:roomId];
-        NSData *roomData = [NSData dataWithContentsOfURL:[NSURL URLWithString:roomInfoUrl]];
+        NSMutableURLRequest *request = [[NSMutableURLRequest alloc] initWithURL:[NSURL URLWithString:roomInfoUrl]];
+        request.timeoutInterval = 5.0f;
+
+        dispatch_semaphore_t semaphore = dispatch_semaphore_create(0);
+
+        __block NSData *roomData = nil;
+        NSURLSession *session = [NSURLSession sharedSession];
+        NSURLSessionDataTask *task = [session dataTaskWithRequest:request completionHandler:^(NSData * _Nullable data, NSURLResponse * _Nullable response, NSError * _Nullable error) {
+            if (!error) {
+                roomData = data;
+            }
+            dispatch_semaphore_signal(semaphore);
+        }];
+        [task resume];
+
+        dispatch_semaphore_wait(semaphore,DISPATCH_TIME_FOREVER);
+
         if (!roomData) {
             return nil;
         }
@@ -37,6 +53,7 @@
     NSString *sign = [[suffix stringByAppendingString:API_SECRET] getMd5_32Bit];
     NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"https://capi.douyucdn.cn/api/v1/%@&auth=%@",suffix,sign]];
     NSMutableURLRequest *request = [[NSMutableURLRequest alloc] initWithURL:url];
+    request.timeoutInterval = 5.0f;
     
     [request setValue:@"Mozilla/5.0 (iPad; CPU OS 8_1_3 like Mac OS X) AppleWebKit/600.1.4 (KHTML, like Gecko) Version/8.0 Mobile/12B466 Safari/600.1.4" forHTTPHeaderField:@"User-Agent"];
     
@@ -45,13 +62,14 @@
     __block NSData *roomData = nil;
     NSURLSession *session = [NSURLSession sharedSession];
     NSURLSessionDataTask *task = [session dataTaskWithRequest:request completionHandler:^(NSData * _Nullable data, NSURLResponse * _Nullable response, NSError * _Nullable error) {
-        roomData = data;
+        if (!error) {
+            roomData = data;
+        }
         dispatch_semaphore_signal(semaphore);
     }];
     [task resume];
 
     dispatch_semaphore_wait(semaphore,DISPATCH_TIME_FOREVER);
-    dispatch_semaphore_signal(semaphore);
     if (!roomData) {
         return NO;
     }
