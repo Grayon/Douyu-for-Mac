@@ -77,34 +77,14 @@ void check_error(int status) {
     }
 }
 
-- (void)loadPlayerWithInfo:(DYRoomInfo *)info withVideoQuality:(NSInteger)quality {
+- (void)loadPlayerWithInfo:(DYRoomInfo *)info {
     [self.loadingView setWantsLayer:YES];
     [self.loadingView.layer setBackgroundColor:ColorFromRGBHex(0xecebeb, 1).CGColor];
     self.roomInfo = info;
     [self setTitle:[NSString stringWithFormat:@"【%@（%@）】%@",self.roomInfo.nickName,self.roomInfo.roomId,self.roomInfo.roomName]];
     [self.view.window setTitle:self.title];
     dispatch_async(dispatch_get_main_queue(), ^{
-        switch (quality) {
-            case 2:{
-                if (self.roomInfo.lowVideoUrl.length > 0) {
-                    [self playVideo:self.roomInfo.lowVideoUrl];
-                    break;
-                }
-            }
-            case 1:{
-                if (self.roomInfo.middleVideoUrl.length > 0) {
-                    [self playVideo:self.roomInfo.middleVideoUrl];
-                    break;
-                }
-            }
-            case 0:{
-                [self playVideo:self.roomInfo.videoUrl];
-                break;
-            }
-            default:
-                [self playVideo:self.roomInfo.videoUrl];
-                break;
-        }
+        [self playVideo:self.roomInfo.videoUrl];
         [self loadDanmu];
     });
 }

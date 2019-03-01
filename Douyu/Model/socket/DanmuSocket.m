@@ -76,11 +76,10 @@ static DanmuSocket *instance = nil;
      加入弹幕组
      type@=joingroup/rid@=213116/gid@=1/
      */
-    NSString *danmuLogin = [NSString stringWithFormat:@"type@=loginreq/username@=%@/password@=1234567890123456/roomid@=%@/",self.vistorID,self.room];
-    NSData *postLoginData = [self packToData:danmuLogin];
+    NSString *loginreq = [NSString stringWithFormat:@"type@=loginreq/roomid@=%@/", self.room];
     self.isFirstDate = YES;
-    [self.socket writeData:postLoginData withTimeout:30 tag:1];
-    
+    [self.socket writeData:[self packToData:loginreq] withTimeout:30 tag:1];
+
 }
 //断开链接
 - (void)onSocketDidDisconnect:(AsyncSocket *)sock{

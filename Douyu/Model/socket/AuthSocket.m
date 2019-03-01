@@ -23,14 +23,10 @@ static AuthSocket *instance = nil;
 
 - (void)setServerConfig{
     //转换成model，添加到属性
-    self.server = @[].mutableCopy;
-    for (int i = 0; i < _servers.count; i++) {
-        ServerModel *model = [ServerModel new];
-        NSDictionary *sevCfg = _servers[i];
-        model.ip = sevCfg[@"ip"];
-        model.port = [sevCfg[@"port"] intValue];
-        [self.server addObject:model];
-    }
+    ServerModel *model = [ServerModel new];
+    model.ip = @"openbarrage.douyutv.com";
+    model.port = 8601;
+    [self.server addObject:model];
 }
 
 #pragma marl --回调方法

@@ -80,7 +80,8 @@
 
 - (IBAction)playAction:(NSButton *)sender {
     [self.roomComboBox resignFirstResponder];
-    [[NSUserDefaults standardUserDefaults] setInteger:self.videoQualityButton.indexOfSelectedItem forKey:@"videoQuality"];
+    NSInteger videoQuality = self.videoQualityButton.indexOfSelectedItem;
+    [[NSUserDefaults standardUserDefaults] setInteger:videoQuality forKey:@"videoQuality"];
     NSString *room = [self.roomComboBox.stringValue stringByReplacingOccurrencesOfString:@" " withString:@""];
     if (room.length == 0) {
         room = self.roomComboBox.placeholderString;
@@ -89,29 +90,42 @@
 }
 
 - (void)playWithRoomString:(NSString *)room {
-    NSString *roomId = [DYRoomInfo getRoomIdWithString:room];
+    DYRoomInfo *roomInfo = [[DYRoomInfo alloc] init];
+    NSString *roomId = [roomInfo getRoomIdWithString:room];
     if (!roomId.length) {
         [self showError:@"无法获取房间ID信息"];
         return;
     }
-    DYRoomInfo *roomInfo = [[DYRoomInfo alloc] init];
-    if (![roomInfo getInfoWithRoomId:roomId]) {
+    if (!roomInfo.showStatus) {
+        [self showError:@"主播不在线"];
+        return;
+    }
+    NSInteger videoQuality = self.videoQualityButton.indexOfSelectedItem;
+    int rate = 0;
+    switch (videoQuality) {
+        case 2:
+            rate = 1;
+            break;
+        case 1:
+            rate = 2;
+            break;
+        default:
+            break;
+    }
+    if (![roomInfo getInfoWithRoomId:roomId rate:rate]) {
         [self showError:@"无法获取房间信息"];
         return;
     }
     [DYRoomHistoryModel saveRoomId:roomInfo.roomId withNickname:roomInfo.nickName];
     [self reloadHistory];
-    if (!roomInfo.showStatus) {
-        [self showError:@"主播不在线"];
-        return;
-    }
+
     NSWindowController *playerWindowController = [[NSStoryboard storyboardWithName:@"Main" bundle:nil] instantiateControllerWithIdentifier:@"PlayerWindowController"];
     [playerWindowController.window center];
     [playerWindowController.window makeKeyAndOrderFront:nil];
     [playerWindowController.window setDelegate:self];
     self.playerWindowController = playerWindowController;
     PlayerViewController *playerViewController = (PlayerViewController *)playerWindowController.contentViewController;
-    [playerViewController loadPlayerWithInfo:roomInfo withVideoQuality:self.videoQualityButton.indexOfSelectedItem];
+    [playerViewController loadPlayerWithInfo:roomInfo];
     self.playerViewController = playerViewController;
     self.playingActivity = [[NSProcessInfo processInfo] beginActivityWithOptions:NSActivityIdleDisplaySleepDisabled reason:@"playing video"];
     [self.view.window performClose:nil];

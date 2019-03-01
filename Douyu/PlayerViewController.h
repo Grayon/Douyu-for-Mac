@@ -18,6 +18,6 @@
 @property (weak, nonatomic) IBOutlet MpvClientOGLView *glView;
 @property (strong, nonatomic) BarrageRenderer *barrageRenderer;
 
-- (void)loadPlayerWithInfo:(DYRoomInfo *)info withVideoQuality:(NSInteger)quality;
+- (void)loadPlayerWithInfo:(DYRoomInfo *)info;
 - (void)destroyPlayer;
 @end
