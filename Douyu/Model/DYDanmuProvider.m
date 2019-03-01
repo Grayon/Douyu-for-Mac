@@ -13,7 +13,6 @@
 
 @interface DYDanmuProvider ()
 
-@property (nonatomic, strong) AuthSocket *authSocket;
 @property (nonatomic, strong) DanmuSocket *danmuSocket;
 
 @end
@@ -22,20 +21,10 @@
 @implementation DYDanmuProvider
 
 - (void)loadWithInfo:(DYRoomInfo *)roomInfo {
-    _authSocket = [AuthSocket sharedInstance];
-    _authSocket.room = roomInfo.roomId;
-    _authSocket.servers = roomInfo.servers;
-    _danmuSocket = [DanmuSocket sharedInstance];
-    _danmuSocket.room = _authSocket.room;
-    //weak处理防止block循环
-    __weak DanmuSocket *danmuSocket = _danmuSocket;
-    _authSocket.InfoBlock = ^(NSString *vistorID,NSString *groupID){
-        danmuSocket.vistorID = vistorID;
-        danmuSocket.groupID = groupID;
-        [danmuSocket connectSocketHost];
-    };
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(receiveMessageNotification:) name:@"kReceiveDYMessageNotification" object:nil];
-    [_authSocket connectSocketHost];
+    _danmuSocket = [DanmuSocket sharedInstance];
+    _danmuSocket.room = roomInfo.roomId;
+    [_danmuSocket connectSocketHost];
 }
 
 - (void)receiveMessageNotification:(NSNotification *)notification {
@@ -75,7 +64,6 @@
 }
 
 - (void)disconnect{
-    [_authSocket cutOffSocket];
     [_danmuSocket cutOffSocket];
     [[NSNotificationCenter defaultCenter] removeObserver:self];
 }

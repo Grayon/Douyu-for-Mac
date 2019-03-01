@@ -13,14 +13,13 @@
 @property (nonatomic, copy) NSString *roomId;
 @property (nonatomic, copy) NSString *roomName;
 @property (nonatomic, copy) NSString *nickName;
-@property (nonatomic, strong) NSArray *servers;
-@property (nonatomic, copy) NSString *hlsUrl;
 @property (nonatomic, copy) NSString *videoUrl;
-@property (nonatomic, copy) NSString *lowVideoUrl;
-@property (nonatomic, copy) NSString *middleVideoUrl;
 @property (nonatomic, assign) BOOL showStatus;
 
-+ (NSString *)getRoomIdWithString:(NSString *)string;
-- (BOOL)getInfoWithRoomId:(NSString *)roomId;
+@property (nonatomic, copy) NSString *did;
+@property (nonatomic, copy) NSString *roomJS;
+
+- (NSString *)getRoomIdWithString:(NSString *)string;
+- (BOOL)getInfoWithRoomId:(NSString *)roomId rate:(int)rate;
 
 @end

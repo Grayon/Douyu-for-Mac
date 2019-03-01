@@ -39,6 +39,7 @@
 		B010FDD92171ADF400E4657E /* libbluray.2.dylib in CopyFiles */ = {isa = PBXBuildFile; fileRef = B010FDA72171ADF200E4657E /* libbluray.2.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
 		B010FDDA2171ADF400E4657E /* liblcms2.2.dylib in CopyFiles */ = {isa = PBXBuildFile; fileRef = B010FDA82171ADF200E4657E /* liblcms2.2.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
 		B010FDE02171AEC900E4657E /* libmpv.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = B010FD972171ADEE00E4657E /* libmpv.dylib */; };
+		B08B80C62228F5BE0015860E /* crypto-js.js in Resources */ = {isa = PBXBuildFile; fileRef = B08B80C52228F5BE0015860E /* crypto-js.js */; };
 		D213B2761FECAA17009F5123 /* DYRoomHistoryData.m in Sources */ = {isa = PBXBuildFile; fileRef = D213B2751FECAA17009F5123 /* DYRoomHistoryData.m */; };
 		D213B2791FECB9A8009F5123 /* DYRoomHistoryModel.m in Sources */ = {isa = PBXBuildFile; fileRef = D213B2781FECB9A8009F5123 /* DYRoomHistoryModel.m */; };
 		D21DB3301F74E53D00A5E5B1 /* DYDanmuProvider.m in Sources */ = {isa = PBXBuildFile; fileRef = D21DB31D1F74A46300A5E5B1 /* DYDanmuProvider.m */; };
@@ -178,6 +179,7 @@
 		B010FDA82171ADF200E4657E /* liblcms2.2.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = liblcms2.2.dylib; path = Dylib/liblcms2.2.dylib; sourceTree = "<group>"; };
 		B010FDA92171ADF300E4657E /* libpostproc.55.1.100.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libpostproc.55.1.100.dylib; path = Dylib/libpostproc.55.1.100.dylib; sourceTree = "<group>"; };
 		B010FDAA2171ADF300E4657E /* libswresample.3.1.100.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libswresample.3.1.100.dylib; path = Dylib/libswresample.3.1.100.dylib; sourceTree = "<group>"; };
+		B08B80C52228F5BE0015860E /* crypto-js.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; path = "crypto-js.js"; sourceTree = "<group>"; };
 		D213B2741FECAA17009F5123 /* DYRoomHistoryData.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DYRoomHistoryData.h; sourceTree = "<group>"; };
 		D213B2751FECAA17009F5123 /* DYRoomHistoryData.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DYRoomHistoryData.m; sourceTree = "<group>"; };
 		D213B2771FECB9A8009F5123 /* DYRoomHistoryModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DYRoomHistoryModel.h; sourceTree = "<group>"; };
@@ -441,6 +443,7 @@
 		D2B876451F73886900AE844E /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				B08B80C52228F5BE0015860E /* crypto-js.js */,
 				D2B876461F73886900AE844E /* img */,
 			);
 			path = Resources;
@@ -597,6 +600,7 @@
 			files = (
 				D2B876941F7389F400AE844E /* loading.gif in Resources */,
 				D2B8133D1F724D1C00EF526D /* Assets.xcassets in Resources */,
+				B08B80C62228F5BE0015860E /* crypto-js.js in Resources */,
 				D2B813401F724D1C00EF526D /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

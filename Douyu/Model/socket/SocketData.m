@@ -57,7 +57,7 @@
         if (!danmuSocket.connectTimer.isValid) {
             if ([msg rangeOfString:@"type@=login"].location != NSNotFound) {
                 //加入弹幕组
-                NSString *jionGroup = [NSString stringWithFormat:@"type@=joingroup/rid@=%@/gid@=%@/",danmuSocket.room,@"-9999"];//danmuSocket.groupID
+                NSString *jionGroup = [NSString stringWithFormat:@"type@=joingroup/rid@=%@/gid@=%@/", danmuSocket.room, @"-9999"];//danmuSocket.groupID
                 NSData *jGroupData = [danmuSocket packToData:jionGroup];
                 [danmuSocket.socket writeData:jGroupData withTimeout:30 tag:1];
                 //开始发送心跳包
