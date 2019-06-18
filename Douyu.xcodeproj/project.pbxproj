@@ -39,6 +39,9 @@
 		B010FDD92171ADF400E4657E /* libbluray.2.dylib in CopyFiles */ = {isa = PBXBuildFile; fileRef = B010FDA72171ADF200E4657E /* libbluray.2.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
 		B010FDDA2171ADF400E4657E /* liblcms2.2.dylib in CopyFiles */ = {isa = PBXBuildFile; fileRef = B010FDA82171ADF200E4657E /* liblcms2.2.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
 		B010FDE02171AEC900E4657E /* libmpv.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = B010FD972171ADEE00E4657E /* libmpv.dylib */; };
+		B016892422B8BCF000AA92B2 /* debug.js in Resources */ = {isa = PBXBuildFile; fileRef = B016892122B8BCF000AA92B2 /* debug.js */; };
+		B016892522B8BCF000AA92B2 /* dom.js in Resources */ = {isa = PBXBuildFile; fileRef = B016892222B8BCF000AA92B2 /* dom.js */; };
+		B016892622B8BCF000AA92B2 /* patch.js in Resources */ = {isa = PBXBuildFile; fileRef = B016892322B8BCF000AA92B2 /* patch.js */; };
 		B08B80C62228F5BE0015860E /* crypto-js.js in Resources */ = {isa = PBXBuildFile; fileRef = B08B80C52228F5BE0015860E /* crypto-js.js */; };
 		D213B2761FECAA17009F5123 /* DYRoomHistoryData.m in Sources */ = {isa = PBXBuildFile; fileRef = D213B2751FECAA17009F5123 /* DYRoomHistoryData.m */; };
 		D213B2791FECB9A8009F5123 /* DYRoomHistoryModel.m in Sources */ = {isa = PBXBuildFile; fileRef = D213B2781FECB9A8009F5123 /* DYRoomHistoryModel.m */; };
@@ -179,6 +182,9 @@
 		B010FDA82171ADF200E4657E /* liblcms2.2.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = liblcms2.2.dylib; path = Dylib/liblcms2.2.dylib; sourceTree = "<group>"; };
 		B010FDA92171ADF300E4657E /* libpostproc.55.1.100.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libpostproc.55.1.100.dylib; path = Dylib/libpostproc.55.1.100.dylib; sourceTree = "<group>"; };
 		B010FDAA2171ADF300E4657E /* libswresample.3.1.100.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libswresample.3.1.100.dylib; path = Dylib/libswresample.3.1.100.dylib; sourceTree = "<group>"; };
+		B016892122B8BCF000AA92B2 /* debug.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; path = debug.js; sourceTree = "<group>"; };
+		B016892222B8BCF000AA92B2 /* dom.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; path = dom.js; sourceTree = "<group>"; };
+		B016892322B8BCF000AA92B2 /* patch.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; path = patch.js; sourceTree = "<group>"; };
 		B08B80C52228F5BE0015860E /* crypto-js.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; path = "crypto-js.js"; sourceTree = "<group>"; };
 		D213B2741FECAA17009F5123 /* DYRoomHistoryData.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DYRoomHistoryData.h; sourceTree = "<group>"; };
 		D213B2751FECAA17009F5123 /* DYRoomHistoryData.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DYRoomHistoryData.m; sourceTree = "<group>"; };
@@ -443,6 +449,9 @@
 		D2B876451F73886900AE844E /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				B016892122B8BCF000AA92B2 /* debug.js */,
+				B016892222B8BCF000AA92B2 /* dom.js */,
+				B016892322B8BCF000AA92B2 /* patch.js */,
 				B08B80C52228F5BE0015860E /* crypto-js.js */,
 				D2B876461F73886900AE844E /* img */,
 			);
@@ -580,6 +589,7 @@
 			developmentRegion = English;
 			hasScannedForEncodings = 0;
 			knownRegions = (
+				English,
 				en,
 				Base,
 			);
@@ -599,9 +609,12 @@
 			buildActionMask = 2147483647;
 			files = (
 				D2B876941F7389F400AE844E /* loading.gif in Resources */,
+				B016892522B8BCF000AA92B2 /* dom.js in Resources */,
 				D2B8133D1F724D1C00EF526D /* Assets.xcassets in Resources */,
 				B08B80C62228F5BE0015860E /* crypto-js.js in Resources */,
+				B016892422B8BCF000AA92B2 /* debug.js in Resources */,
 				D2B813401F724D1C00EF526D /* Main.storyboard in Resources */,
+				B016892622B8BCF000AA92B2 /* patch.js in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

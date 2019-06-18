@@ -124,18 +124,55 @@
 
     int time = NSDate.date.timeIntervalSince1970;
     NSURL *cryptoJsFileURL = [[NSBundle mainBundle] URLForResource:@"crypto-js" withExtension:@"js"];
+    NSURL *domJsFileURL = [[NSBundle mainBundle] URLForResource:@"dom" withExtension:@"js"];
+    NSURL *patchJsFileURL = [[NSBundle mainBundle] URLForResource:@"patch" withExtension:@"js"];
+    NSURL *debugJsFileURL = [[NSBundle mainBundle] URLForResource:@"debug" withExtension:@"js"];
+
     NSError *error;
     NSString *cryptoJS = [NSString stringWithContentsOfURL:cryptoJsFileURL encoding:NSUTF8StringEncoding error:&error];
     if (error) {
         return NO;
     }
+    NSString *domJS = [NSString stringWithContentsOfURL:domJsFileURL encoding:NSUTF8StringEncoding error:&error];
+    if (error) {
+        return NO;
+    }
+    NSString *patchJs = [NSString stringWithContentsOfURL:patchJsFileURL encoding:NSUTF8StringEncoding error:&error];
+    if (error) {
+        return NO;
+    }
+    NSString *debugJs = [NSString stringWithContentsOfURL:debugJsFileURL encoding:NSUTF8StringEncoding error:&error];
+    if (error) {
+        return NO;
+    }
+
+    NSString *roomJs = self.roomJS;
+    NSRange range = [roomJs rangeOfString:@"function ub98484234"];
+    if (range.location == NSNotFound) {
+        return NO;
+    }
+    NSString *ub98484234 = [roomJs substringFromIndex:range.location];
+    range = [ub98484234 rangeOfString:@"eval\\((\\w+)\\)" options:NSRegularExpressionSearch];
+    if (range.location == NSNotFound) {
+        return NO;
+    }
+    NSString *workflow = [ub98484234 substringWithRange:NSMakeRange(range.location+5, range.length-6)];
+    patchJs = [patchJs stringByReplacingOccurrencesOfString:@"{workflow}" withString:workflow];
+
+    roomJs = [roomJs stringByReplacingOccurrencesOfString:[NSString stringWithFormat:@"eval(%@);", workflow] withString:patchJs];
+
     JSContext *jsContext = [JSContext new];
     [jsContext evaluateScript:cryptoJS];
-    [jsContext evaluateScript:@"var CryptoJS = require('crypto-js');"];
-    [jsContext evaluateScript:self.roomJS];
+    [jsContext evaluateScript:domJS];
+    [jsContext evaluateScript:roomJs];
+    [jsContext evaluateScript:debugJs];
 
-    NSString *result = [jsContext evaluateScript:[NSString stringWithFormat:@"ub98484234(%@, '%@', %d)", roomId, self.did, time]].toString;
-    NSString *postString = [NSString stringWithFormat:@"%@&cdn=&rate=%d&ver=Douyu_219021902&iar=1&ive=0", result, rate];
+    NSDictionary *resultDic = [jsContext evaluateScript:[NSString stringWithFormat:@"ub98484234(%@, '%@', %d)", roomId, self.did, time]].toDictionary;
+    if (!resultDic) {
+        return NO;
+    }
+    NSString *result = resultDic[@"result"];
+    NSString *postString = [NSString stringWithFormat:@"%@&cdn=&rate=%d&iar=0&ive=0", result, rate];
 
     NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"https://www.douyu.com/lapi/live/getH5Play/%@", roomId]];
     NSMutableURLRequest *request = [[NSMutableURLRequest alloc] initWithURL:url];
